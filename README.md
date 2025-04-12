@@ -1,3 +1,3 @@
 # Study App VR
 
-## Project for course work
+Project for course work
