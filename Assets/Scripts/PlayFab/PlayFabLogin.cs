@@ -6,9 +6,6 @@ namespace PlayFab
 {
 	public class PlayFabLogin : MonoBehaviour
 	{
-		public event Action PlayFabLoginSuccessEvent;
-		public event Action PlayFabLoginErrorEvent;
-		
 		public void CheckAccountExists(string username, string password, Action<bool, PlayFabErrorCode> callback)
 		{
 			var request = new LoginWithPlayFabRequest

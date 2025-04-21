@@ -7,5 +7,8 @@ namespace LearningAppVR.UI
 		
 		void OpenMainMenuPanel();
 		void OpenSettingsPanel();
+		void OpenProfilePanel();
+
+		void CloseCurrentPanel();
 	}
 }

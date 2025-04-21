@@ -1,3 +1,5 @@
+using System;
+using PlayFab;
 using UnityEngine;
 
 namespace LearningAppVR.Player
@@ -14,6 +16,13 @@ namespace LearningAppVR.Player
 		public bool HasRememberedInfo { get; private set; }
 		public string UserName { get; private set; }
 		public string Password { get; private set; }
+		public UserRole UserRole => _userData.PersonalData.UserRole;
+
+		private PlayFabServerRequester _playFabServerRequester;
+		private UserData _userData;
+		
+		private bool _isInitialized = false;
+		private Action _finishInitializingSubscribers;
 
 		public void Initialize()
 		{
@@ -46,6 +55,36 @@ namespace LearningAppVR.Player
 			PlayerPrefs.SetInt(REMEMBER_ME_KEY, 1);
 
 			HasRememberedInfo = true;
+			InitializeUserData();
+		}
+
+		public void SubscribeOnFinishInitialization(Action subscriber)
+		{
+			if (_isInitialized)
+			{
+				subscriber?.Invoke();
+				return;
+			}
+
+			_finishInitializingSubscribers += subscriber;
+		}
+
+		public void SendTeacherRoleRequest()
+		{
+			_playFabServerRequester.SaveRoleRequest(new RoleRequestData()
+			{
+				HasTeacherRoleRequest = true
+			});
+		}
+
+		private async void InitializeUserData()
+		{
+			_playFabServerRequester = new();
+
+			_userData = await _playFabServerRequester.GetUserData();
+
+			_isInitialized = true;
+			_finishInitializingSubscribers?.Invoke();
 		}
 	}
 }
