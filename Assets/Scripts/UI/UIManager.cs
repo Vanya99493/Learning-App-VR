@@ -1,4 +1,3 @@
-using System;
 using UnityEngine;
 
 namespace LearningAppVR.UI
@@ -6,19 +5,45 @@ namespace LearningAppVR.UI
 	public class UIManager : MonoBehaviour, IUIManager
 	{
 		[SerializeField]
+		private PopupsManager _popupsManager;
+
+		[Space(10)]
+		[Header("Panels")]
+		[SerializeField]
+		private LoginPanel _loginPanel;
+		
+		[SerializeField]
 		private MainMenuPanel _mainMenuPanel;
 
 		[SerializeField]
 		private SettingsPanel _settingsPanel;
 
+		[Space(10)]
+		[SerializeField]
+		private bool _openByDefault;
+
 		private BasePanel _currentActivePanel;
 
-		private void Awake()
+		public void Initialize()
 		{
+			_loginPanel.Initialize(this);
 			_mainMenuPanel.Initialize(this);
 			_settingsPanel.Initialize(this);
-			
-			OpenNewPanel(_mainMenuPanel);
+
+			if (_openByDefault)
+			{
+				OpenNewPanel(_loginPanel);
+			}
+		}
+
+		public void ActivatePopup(PopupData popupData)
+		{
+			_popupsManager.ActivatePopup(popupData);
+		}
+
+		public void DeactivatePopup()
+		{
+			_popupsManager.DeactivatePopup();
 		}
 
 		public void OpenMainMenuPanel()
