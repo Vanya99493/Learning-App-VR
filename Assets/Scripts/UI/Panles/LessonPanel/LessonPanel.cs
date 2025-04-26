@@ -1,67 +1,86 @@
 using System;
-using System.Collections.Generic;
-using TMPro;
 using UnityEngine;
 
 namespace LearningAppVR.UI
 {
-	public class LessonPanel : MonoBehaviour
+	public class LessonPanel : BasePanel, ILessonPanel
 	{
-		public event Action<string> SelectAnswerEvent;
+		public event Action EndCountdownEvent;
 		
 		[SerializeField]
-		private TMP_Text _lessonNameText;
+		private PreparationPanel _preparationPanel;
 
 		[SerializeField]
-		private TMP_Text _questionText;
+		private CountDownPanel _countDownPanel;
+
+		[SerializeField]
+		private QuizPanel _quizPanel;
+
+		[SerializeField]
+		private ResultsPanel _resultsPanel;
+
+		private LessonSubPanel _currentActivePanel;
+
+		public QuizPanel QuizPanel => _quizPanel;
+
+		public override void Initialize(IUIManager uiManager)
+		{
+			base.Initialize(uiManager);
+			
+			_preparationPanel.Initialize(this);
+			_countDownPanel.Initialize(this);
+			_quizPanel.Initialize(this);
+			_resultsPanel.Initialize(this);
+		}
+
+		public void CloseLessonPanel()
+		{
+			_uiManager.OpenMainMenuPanel();
+		}
+
+		public void OpenPreparationPanel()
+		{
+			OpenNewPanel(_preparationPanel);
+		}
 		
-		[SerializeField]
-		private List<AnswerButton> _answerButtons = new();
-
-		public void Initialize(string lessonNameText)
+		public void OpenPreparationPanel(string lessonName)
 		{
-			ResetPanel();
-			_lessonNameText.text = lessonNameText;
+			CloseCurrentPanel();
+			_preparationPanel.Open(lessonName);
 		}
 
-		public void ResetPanel()
+		public void OpenCountDownPanel()
 		{
-			foreach (var answerButton in _answerButtons)
-			{
-				answerButton.DeInitialize();
-			}
-
-			_lessonNameText.text = "Lesson name";
+			OpenNewPanel(_countDownPanel);
 		}
 
-		public void SetupQuestion(QuestionData questionData)
+		public void OpenQuizPanel()
 		{
-			_questionText.text = questionData.Question;
-			InitializeAnswersButtons(questionData.Answers);
+			OpenNewPanel(_quizPanel);
 		}
 
-		private void InitializeAnswersButtons(List<string> answers)
+		public void OpenResultsPanel(int earnedPoint, int maxPoints = -1)
 		{
-			int answerIndex = 0;
-			foreach (var answerButton in _answerButtons)
-			{
-				if (answerIndex < answers.Count)
-				{
-					string answer = answers[answerIndex];
-					answerButton.Initialize(answer, () => OnAnswerButtonClickEventHandler(answer));
-				}
-				else
-				{
-					answerButton.DeInitialize();
-				}
-
-				answerIndex++;
-			}
+			CloseCurrentPanel();
+			_resultsPanel.Open(earnedPoint, maxPoints);
 		}
 
-		private void OnAnswerButtonClickEventHandler(string selectedAnswer)
+		public void OnEndCountdown()
 		{
-			SelectAnswerEvent?.Invoke(selectedAnswer);
+			EndCountdownEvent?.Invoke();
+		}
+
+		public void CloseCurrentPanel()
+		{
+			_currentActivePanel?.Close();
+			_currentActivePanel = null;
+		}
+
+		private void OpenNewPanel(LessonSubPanel newPanel)
+		{
+			_currentActivePanel?.Close();
+			_currentActivePanel = newPanel;
+			_currentActivePanel.Open();
 		}
 	}
 }

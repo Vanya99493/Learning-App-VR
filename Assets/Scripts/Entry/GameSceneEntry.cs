@@ -12,10 +12,14 @@ namespace LearningAppVR
 		[SerializeField]
 		private UIManager _uiManager;
 
+		[SerializeField]
+		private LessonStarter _lessonStarter;
+
 		private void Awake()
 		{
 			_playerInfo.Initialize();
 			_uiManager.Initialize();
+			_lessonStarter.Initialize(_uiManager.LessonPanel);
 		}
 	}
 }

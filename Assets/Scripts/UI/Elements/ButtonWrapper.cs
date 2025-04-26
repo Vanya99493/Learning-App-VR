@@ -8,5 +8,6 @@ namespace LearningAppVR.UI
 	{
 		public TMP_Text Text;
 		public Button Button;
+		public Image Image;
 	}
 }

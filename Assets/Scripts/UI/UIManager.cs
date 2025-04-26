@@ -21,11 +21,16 @@ namespace LearningAppVR.UI
 		[SerializeField]
 		private ProfilePanel _profilePanel;
 
+		[SerializeField]
+		private LessonPanel _lessonPanel;
+
 		[Space(10)]
 		[SerializeField]
 		private bool _openByDefault;
 
 		private BasePanel _currentActivePanel;
+
+		public LessonPanel LessonPanel => _lessonPanel;
 
 		public void Initialize()
 		{
@@ -33,6 +38,7 @@ namespace LearningAppVR.UI
 			_mainMenuPanel.Initialize(this);
 			_settingsPanel.Initialize(this);
 			_profilePanel.Initialize(this);
+			_lessonPanel.Initialize(this);
 
 			if (_openByDefault)
 			{
@@ -63,6 +69,11 @@ namespace LearningAppVR.UI
 		public void OpenProfilePanel()
 		{
 			OpenNewPanel(_profilePanel);
+		}
+
+		public void OpenLessonPanel()
+		{
+			OpenNewPanel(_lessonPanel);
 		}
 
 		public void CloseCurrentPanel()

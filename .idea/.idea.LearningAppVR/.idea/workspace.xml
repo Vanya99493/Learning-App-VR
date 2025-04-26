@@ -6,24 +6,23 @@
   <component name="ChangeListManager">
     <list default="true" id="d81919c1-8902-4f73-9b51-c1e300207bb7" name="Changes" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/.idea.LearningAppVR/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/.idea.LearningAppVR/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Scenes/Debug/GameSystem.unity" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Scenes/Debug/GameSystem.unity.meta" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/Assets/Scenes/Release/GameScene.unity" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scenes/Release/GameScene.unity" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Scripts/Data/LessonData.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/Data/Teacher/LessonData.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Scripts/Data/LessonData.cs.meta" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/Data/Teacher/LessonData.cs.meta" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Scripts/Data/QuestionData.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/Data/Teacher/QuestionData.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Scripts/Data/QuestionData.cs.meta" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/Data/Teacher/QuestionData.cs.meta" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Scripts/Data/RoomData.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/Data/Teacher/RoomData.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Scripts/Data/RoomData.cs.meta" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/Data/Teacher/RoomData.cs.meta" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Scripts/Data/TeacherData.cs" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Scripts/Data/TeacherData.cs.meta" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Scripts/PlayFab/PlayFabLogin.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/PlayFab/PlayFabLogin.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Scripts/Player/PlayerInfo.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/Player/PlayerInfo.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Scripts/Data/Teacher/LessonData.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/Data/Teacher/LessonData.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Scripts/Entry/Debug.meta" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Scripts/Entry/Debug/LessonCycleEntry.cs" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Scripts/Entry/Debug/LessonCycleEntry.cs.meta" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Scripts/Entry/GameSceneEntry.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/Entry/GameSceneEntry.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Scripts/LessonCircle/LessonController.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/LessonCircle/LessonController.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Scripts/UI/Elements/ButtonWrapper.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/UI/Elements/ButtonWrapper.cs" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Assets/Scripts/UI/IUIManager.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/UI/IUIManager.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Scripts/UI/Panles/MainMenu/MainMenuPanel.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/UI/Panles/MainMenu/MainMenuPanel.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Scripts/UI/Panles/Profile/ProfilePanel.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/UI/Panles/Profile/ProfilePanel.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Scripts/UI/Panles/Statistics.meta" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Scripts/UI/Panles/Statistics/StatisticsPanel.cs" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Scripts/UI/Panles/Statistics/StatisticsPanel.cs.meta" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Scripts/UI/Panles/Base/BasePanel.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/UI/Panles/Base/BasePanel.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Scripts/UI/Panles/LessonPanel/AnswerButton.cs" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Scripts/UI/Panles/LessonPanel/AnswerButton.cs.meta" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Scripts/UI/Panles/LessonPanel/LessonPanel.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/UI/Panles/LessonPanel/LessonPanel.cs" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Assets/Scripts/UI/UIManager.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/UI/UIManager.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/TextMesh Pro/Resources/Fonts &amp; Materials/LiberationSans SDF - Fallback.asset" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/TextMesh Pro/Resources/Fonts &amp; Materials/LiberationSans SDF - Fallback.asset" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -35,6 +34,7 @@
     <setting file="file://$PROJECT_DIR$/Assets/Scripts/UI/PopupsManager/Popups/Popup.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/Assets/Scripts/UI/PopupsManager/Popups/PopupData/PopupData.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/DecompilerCache/decompiler/314938d17f3848e8ac683e11b27f62ee46ae00/33/138c9e19/AsyncVoidMethodBuilder.cs" root0="SKIP_HIGHLIGHTING" />
+    <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/SourcesCache/d44b17e136d09081da1e8fd0e8c83fde60e11818b9f2442d7ed8cb733fae895e/System.Collections.Generic.cs" root0="SKIP_HIGHLIGHTING" />
   </component>
   <component name="MarkdownSettingsMigration">
     <option name="stateVersion" value="1" />
@@ -56,6 +56,7 @@
     &quot;node.js.detected.package.eslint&quot;: &quot;true&quot;,
     &quot;node.js.selected.package.eslint&quot;: &quot;(autodetect)&quot;,
     &quot;node.js.selected.package.tslint&quot;: &quot;(autodetect)&quot;,
+    &quot;settings.editor.selected.configurable&quot;: &quot;preferences.sourceCode.C#&quot;,
     &quot;vue.rearranger.settings.migration&quot;: &quot;true&quot;
   },
   &quot;keyToStringList&quot;: {
@@ -93,10 +94,10 @@
       </option>
       <method v="2" />
     </configuration>
-    <configuration name="Attach to Unity Editor" type="UNITY_DEBUG_RUN_CONFIGURATION" factoryName="Unity Debug" show_console_on_std_err="false" show_console_on_std_out="false" port="50000" address="localhost" ignored-value-for-modified-check="30708">
+    <configuration name="Attach to Unity Editor" type="UNITY_DEBUG_RUN_CONFIGURATION" factoryName="Unity Debug" show_console_on_std_err="false" show_console_on_std_out="false" port="50000" address="localhost">
       <option name="allowRunningInParallel" value="false" />
       <option name="listenPortForConnections" value="false" />
-      <option name="pid" value="30708" />
+      <option name="pid" />
       <option name="projectPathOnTarget" />
       <option name="selectedOptions">
         <list />
@@ -118,7 +119,9 @@
       <workItem from="1744904299652" duration="5941000" />
       <workItem from="1744997784093" duration="676000" />
       <workItem from="1745073395401" duration="1452000" />
-      <workItem from="1745223519501" duration="21578000" />
+      <workItem from="1745223519501" duration="22460000" />
+      <workItem from="1745333502023" duration="9109000" />
+      <workItem from="1745592653687" duration="6231000" />
     </task>
     <servers />
   </component>
@@ -129,24 +132,5 @@
   <component name="UnityUnitTestConfiguration" currentTestLauncher="Both" />
   <component name="VcsManagerConfiguration">
     <option name="CLEAR_INITIAL_COMMIT_MESSAGE" value="true" />
-  </component>
-  <component name="XDebuggerManager">
-    <breakpoint-manager>
-      <breakpoints>
-        <line-breakpoint enabled="true" type="DotNet Breakpoints">
-          <url>file://$PROJECT_DIR$/Assets/Scripts/PlayFab/PlayFabServerRequester.cs</url>
-          <line>30</line>
-          <properties documentPath="C:\Programming\CourseWork\LearningAppVR\Assets\Scripts\PlayFab\PlayFabServerRequester.cs" initialLine="30" containingFunctionPresentation="Method 'ParseData'">
-            <startOffsets>
-              <option value="900" />
-            </startOffsets>
-            <endOffsets>
-              <option value="926" />
-            </endOffsets>
-          </properties>
-          <option name="timeStamp" value="23" />
-        </line-breakpoint>
-      </breakpoints>
-    </breakpoint-manager>
   </component>
 </project>

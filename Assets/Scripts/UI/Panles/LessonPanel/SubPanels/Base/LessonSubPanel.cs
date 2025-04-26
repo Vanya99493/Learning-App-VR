@@ -2,13 +2,13 @@ using UnityEngine;
 
 namespace LearningAppVR.UI
 {
-	public abstract class BasePanel : MonoBehaviour
+	public class LessonSubPanel : MonoBehaviour
 	{
-		protected IUIManager _uiManager;
+		protected ILessonPanel _lessonPanel;
 		
-		public virtual void Initialize(IUIManager uiManager)
+		public virtual void Initialize(ILessonPanel lessonPanel)
 		{
-			_uiManager = uiManager;
+			_lessonPanel = lessonPanel;
 			Close();
 		}
 		

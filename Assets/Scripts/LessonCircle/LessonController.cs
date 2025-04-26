@@ -1,6 +1,4 @@
-using System;
-using JetBrains.Annotations;
-using LearningAppVR.DataAssets;
+using System.Collections.Generic;
 using LearningAppVR.UI;
 using UnityEngine;
 
@@ -8,57 +6,84 @@ namespace LearningAppVR
 {
 	public class LessonController : MonoBehaviour
 	{
-		[CanBeNull]
-		public event Action<int> EndLessonEvent;
-		
-		private LessonPanel _lessonPanel;
-		
-		private LessonDataAsset _lessonDataAsset;
-		private int _currentQuestion;
-		private int _correctAnswers;
+		private QuizPanel _quizPanel;
+		private LessonData _lessonData;
+		private Dictionary<int, string> _answersContainer = new();
+		private Timer _timer;
 
-		public void Initialize(LessonPanel lessonPanel)
-		{
-			_lessonPanel = lessonPanel;
-			_lessonPanel.SelectAnswerEvent += OnAnswerSelectedEventHandler;
-		}
+		private int _questionNumber;
 
-		private void OnDestroy()
+		public void Initialize(QuizPanel quizPanel)
 		{
-			_lessonPanel.SelectAnswerEvent -= OnAnswerSelectedEventHandler;
-		}
-
-		public void StartLesson(LessonDataAsset lessonDataAsset)
-		{
-			_correctAnswers = 0;
-			_currentQuestion = 0;
-			_lessonDataAsset = lessonDataAsset;
+			_quizPanel = quizPanel;
+			_quizPanel.Initialize(OnAnswerSelected);
 			
-			_lessonPanel.Initialize(lessonDataAsset.LessonName);
-			SetupNewQuestion();
+			_timer = new Timer();
+			_timer.TimerUpdateEvent += OnTimerUpdate;
+			_timer.TimerEndEvent += OnTimerEnd;
 		}
-
-		private void SetupNewQuestion()
+		
+		public void SetupLesson(LessonData lessonData)
 		{
-			_lessonPanel.SetupQuestion(_lessonDataAsset.Questions[_currentQuestion]);
-		}
-
-		private void OnAnswerSelectedEventHandler(string selectedAnswer)
-		{
-			if (selectedAnswer == _lessonDataAsset.Questions[_currentQuestion].CorrectAnswer)
+			_lessonData = lessonData;
+			
+			_answersContainer.Clear();
+			for (int i = 1; i <= lessonData.QuestionsData.Count; i++)
 			{
-				_correctAnswers++;
+				_answersContainer.Add(i, null);
 			}
 
-			_currentQuestion++;
+			_quizPanel.InitializeQuestionsButtons(lessonData.QuestionsData.Count, OnQuestionButtonWrapperSelected);
+			
+			SetupQuestion();
+			_quizPanel.SetupButtonWrapperState(0, ButtonStateType.Active);
+			
+			_timer.Start(_lessonData.LessonTime);
+		}
 
-			if (_currentQuestion < _lessonDataAsset.Questions.Count)
+		private void EndLesson()
+		{
+			// TODO: add logic of calculation of the lesson quiz
+		}
+
+		private void SetupQuestion(int questionNumber = 1)
+		{
+			_questionNumber = questionNumber;
+			
+			_quizPanel.SetupQuestion(_lessonData.QuestionsData[_questionNumber - 1], _answersContainer[_questionNumber]);
+		}
+
+		private void OnQuestionButtonWrapperSelected(int questionIndex)
+		{
+			_quizPanel.SetupButtonWrapperState(_questionNumber - 1, _answersContainer[_questionNumber] is null ? ButtonStateType.Passive : ButtonStateType.Answered);
+			_questionNumber = questionIndex;
+			_quizPanel.SetupButtonWrapperState(_questionNumber - 1, ButtonStateType.Active);
+		}
+
+		private void OnAnswerSelected(string answer)
+		{
+			var previousAnswer = _answersContainer[_questionNumber];
+			if (previousAnswer is null)
 			{
-				SetupNewQuestion();
+				_answersContainer[_questionNumber] = answer;
 			}
 			else
 			{
-				EndLessonEvent?.Invoke(_correctAnswers);
+				_answersContainer[_questionNumber] = null;
+			}
+			_quizPanel.SetupQuestion(_lessonData.QuestionsData[_questionNumber - 1], _answersContainer[_questionNumber]);
+		}
+
+		private void OnTimerUpdate()
+		{
+			_quizPanel.UpdateTimeCountUI(Mathf.CeilToInt(_timer.Time));
+		}
+
+		private void OnTimerEnd()
+		{
+			if (_lessonData.BlockAnswersAfterTimeOut)
+			{
+				EndLesson();
 			}
 		}
 	}
