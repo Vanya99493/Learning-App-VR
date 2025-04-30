@@ -1,5 +1,7 @@
 using LearningAppVR.Player;
 using LearningAppVR.UI;
+using NaughtyAttributes;
+using PlayFab;
 using UnityEngine;
 
 namespace LearningAppVR
@@ -19,7 +21,18 @@ namespace LearningAppVR
 		{
 			_playerInfo.Initialize();
 			_uiManager.Initialize();
-			_lessonStarter.Initialize(_uiManager.LessonPanel);
+			//_lessonStarter.Initialize(_uiManager.LessonPanel);
+		}
+
+		[Button]
+		private void CheckIdGeneratingLogic()
+		{
+			PlayFabCloudScriptsInvoke.GenerateId(Log);
+		}
+
+		private void Log(string result)
+		{
+			Debug.Log(result);
 		}
 	}
 }

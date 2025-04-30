@@ -1,3 +1,4 @@
+using NaughtyAttributes;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
@@ -34,6 +35,24 @@ namespace LearningAppVR.UI
 		{
 			_usernameInputField.text = username;
 			_userpassInputField.text = userpass;
+		}
+
+		[Button]
+		public void LoginAs123()
+		{
+			Fill("123", "12345678");
+		}
+
+		[Button]
+		public void LoginAsNiko()
+		{
+			Fill("Niko", "12345678");
+		}
+
+		[Button]
+		public void LoginAsAboba()
+		{
+			Fill("Aboba", "12345678");
 		}
 	}
 }

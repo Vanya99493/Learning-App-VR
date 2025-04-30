@@ -10,14 +10,7 @@ namespace LearningAppVR.UI
 
 		public void Setup(int timeLeftInSeconds)
 		{
-			_timeLeftText.text = GenerateTimeString(timeLeftInSeconds);
-		}
-
-		private string GenerateTimeString(int seconds)
-		{
-			return (seconds >= 3600 ? $"{Mathf.FloorToInt(seconds / 3600)}:" : "") +
-			       (seconds >= 60 ? $"{Mathf.FloorToInt(seconds % 3600 / 60):D2}:" : "") +
-			       $"{seconds % 60:D2}";
+			_timeLeftText.text = timeLeftInSeconds.ToTimeString();
 		}
 	}
 }

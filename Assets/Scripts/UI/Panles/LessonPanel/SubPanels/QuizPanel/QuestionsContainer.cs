@@ -15,7 +15,7 @@ namespace LearningAppVR.UI
 
 		[Space(5)]
 		[SerializeField]
-		private AnswerButtonStatesConfig _answerButtonStatesConfig;
+		private ButtonStatesConfig buttonStatesConfig;
 		
 		public void AddQuestionButton(Action<int> onQuestionButtonClickCallback)
 		{
@@ -39,7 +39,7 @@ namespace LearningAppVR.UI
 
 		public void SetupButtonWrapperState(int buttonWrapperIndex, ButtonStateType stateType)
 		{
-			_questionsButtons[buttonWrapperIndex].Image.color = _answerButtonStatesConfig.GetColor(stateType);
+			_questionsButtons[buttonWrapperIndex].Image.color = buttonStatesConfig.GetColor(stateType);
 		}
 	}
 }

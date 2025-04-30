@@ -6,7 +6,6 @@ namespace LearningAppVR
 	public class UserData
 	{
 		public PersonalData PersonalData;
-		public TraineeResults TraineeResults;
-		public TeacherRooms TeacherRooms;
+		public OwnedRoomsCollection OwnedRoomsCollection;
 	}
 }

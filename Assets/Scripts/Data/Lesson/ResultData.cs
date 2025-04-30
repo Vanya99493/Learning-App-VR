@@ -5,8 +5,8 @@ namespace LearningAppVR
 	[Serializable]
 	public class ResultData
 	{
-		public string RoomId = "";
+		public string TraineeName = "";
 		public int EarnedPoints = 0;
-		public int TimeInSeconds = 0;
+		public string LessonId = "";
 	}
 }

@@ -21,7 +21,7 @@ namespace LearningAppVR.UI
 		{
 			base.Initialize(uiManager);
 			
-			//_startButton.onClick.AddListener(_uiManager.OpenLevelsPanel);
+			_startButton.onClick.AddListener(() => _uiManager.OpenSelectRoomPanel(true));
 			_profileButton.onClick.AddListener(_uiManager.OpenProfilePanel);
 			_settingsButton.onClick.AddListener(_uiManager.OpenSettingsPanel);
 			_exitButton.onClick.AddListener(OnExitButtonClick);

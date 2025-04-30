@@ -1,4 +1,5 @@
 using System;
+using NaughtyAttributes;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
@@ -23,6 +24,12 @@ namespace LearningAppVR.UI
 		{
 			_loginButton.onClick.AddListener(() => onLoginButtonClickEvent?.Invoke(_usernameInputFuild.text, _passwordInputFuild.text));
 			_returnButton.onClick.AddListener(() => onReturnButtonClickEvent?.Invoke());
+		}
+
+		[Button]
+		public void Login()
+		{
+			_loginButton.onClick.Invoke();
 		}
 
 		public void Activate(bool hasRememberedInfo)

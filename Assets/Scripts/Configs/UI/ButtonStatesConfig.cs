@@ -4,8 +4,8 @@ using UnityEngine;
 
 namespace LearningAppVR.Configs
 {
-	[CreateAssetMenu(fileName = "AnswerButtonStatesConfig", menuName = "Learning App VR/Configs/UI/Answer Button States Config")]
-	public class AnswerButtonStatesConfig : ScriptableObject
+	[CreateAssetMenu(fileName = "ButtonStatesConfig", menuName = "Learning App VR/Configs/UI/Button States Config")]
+	public class ButtonStatesConfig : ScriptableObject
 	{
 		[SerializeField]
 		private List<Pair<ButtonStateType, Color>> _buttonStates;

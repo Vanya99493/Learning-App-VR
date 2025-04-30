@@ -4,8 +4,8 @@ using System.Collections.Generic;
 namespace LearningAppVR
 {
 	[Serializable]
-	public class TeacherRooms
+	public class RoomsCollection
 	{
-		public List<RoomData> OwnedRooms = new();
+		public List<RoomData> Rooms = new();
 	}
 }

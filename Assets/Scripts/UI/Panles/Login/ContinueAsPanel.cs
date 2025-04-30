@@ -1,4 +1,5 @@
 using System;
+using NaughtyAttributes;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
@@ -20,6 +21,12 @@ namespace LearningAppVR.UI
 		{
 			_continueButton.onClick.AddListener(() => onContinueButtonClickEvent?.Invoke());
 			_reloginButton.onClick.AddListener(() => onReLoginButtonClickEvent?.Invoke());
+		}
+
+		[Button]
+		public void Continue()
+		{
+			_continueButton.onClick.Invoke();
 		}
 		
 		public void Activate(string username)

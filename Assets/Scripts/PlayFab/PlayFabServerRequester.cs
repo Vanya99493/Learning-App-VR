@@ -10,8 +10,7 @@ namespace PlayFab
 	public class PlayFabServerRequester
 	{
 		private const string PLAYFAB_KEY_PERSONAL_DATA = "Personal Data";
-		private const string PLAYFAB_KEY_TRAINEE_RESULTS_DATA = "Trainee Results Data";
-		private const string PLAYFAB_KEY_TEACHER_ROOMS_DATA = "Teacher Rooms Data";
+		private const string PLAYFAB_KEY_OWNED_ROOMS_DATA = "Owned Rooms Data";
 		private const string PLAYFAB_KEY_REQUESTS_DATA = "Requests Data";
 		
 		public async Task<UserData> GetUserData()
@@ -40,25 +39,21 @@ namespace PlayFab
 				SavePersonalData(userData.PersonalData);
 			}
 			
-			if (result.Data.TryGetValue(PLAYFAB_KEY_TRAINEE_RESULTS_DATA, out var traineeResults))
-			{
-				userData.TraineeResults = JsonUtility.FromJson<TraineeResults>(traineeResults.Value);
-			}
-			else
-			{
-				userData.TraineeResults = new TraineeResults();
-			}
-			
 			if (result.Data.TryGetValue(PLAYFAB_KEY_PERSONAL_DATA, out var teacherRooms))
 			{
-				userData.TeacherRooms = JsonUtility.FromJson<TeacherRooms>(teacherRooms.Value);
+				userData.OwnedRoomsCollection = JsonUtility.FromJson<OwnedRoomsCollection>(teacherRooms.Value);
 			}
 			else
 			{
-				userData.TeacherRooms = new TeacherRooms();
+				userData.OwnedRoomsCollection = new OwnedRoomsCollection();
 			}
 
 			return userData;
+		}
+
+		public async Task<RoomsCollection> GetAllRoomsData()
+		{
+			return new RoomsCollection();
 		}
 
 		public void SavePersonalData(PersonalData personalData)
@@ -71,21 +66,11 @@ namespace PlayFab
 			SavePlayerStatistics(playerStatistics);
 		}
 
-		public void SaveTraineeResults(TraineeResults traineeResults)
+		public void SaveTeacherRooms(RoomsCollection roomsCollection)
 		{
 			var playerStatistics = new Dictionary<string, string>()
 			{
-				{ PLAYFAB_KEY_TRAINEE_RESULTS_DATA, JsonUtility.ToJson(traineeResults) }
-			};
-			
-			SavePlayerStatistics(playerStatistics);
-		}
-
-		public void SaveTeacherRooms(TeacherRooms teacherRooms)
-		{
-			var playerStatistics = new Dictionary<string, string>()
-			{
-				{ PLAYFAB_KEY_TEACHER_ROOMS_DATA, JsonUtility.ToJson(teacherRooms) }
+				{ PLAYFAB_KEY_OWNED_ROOMS_DATA, JsonUtility.ToJson(roomsCollection) }
 			};
 			
 			SavePlayerStatistics(playerStatistics);
@@ -106,8 +91,7 @@ namespace PlayFab
 			var playerStatistics = new Dictionary<string, string>()
 			{
 				{ PLAYFAB_KEY_PERSONAL_DATA, JsonUtility.ToJson(userData.PersonalData) },
-				{ PLAYFAB_KEY_TRAINEE_RESULTS_DATA, JsonUtility.ToJson(userData.TraineeResults) },
-				{ PLAYFAB_KEY_TEACHER_ROOMS_DATA, JsonUtility.ToJson(userData.TeacherRooms) }
+				{ PLAYFAB_KEY_OWNED_ROOMS_DATA, JsonUtility.ToJson(userData.OwnedRoomsCollection) }
 			};
 			
 			SavePlayerStatistics(playerStatistics);

@@ -12,7 +12,7 @@ namespace LearningAppVR.UI
 
 		[Space(5)]
 		[SerializeField]
-		private AnswerButtonStatesConfig _answerButtonStatesConfig;
+		private ButtonStatesConfig buttonStatesConfig;
 
 		public void Initialize(Action<string> onSelectAnswer)
 		{
@@ -31,7 +31,7 @@ namespace LearningAppVR.UI
 				{
 					string answer = answers[index];
 					button.Text.text = answer;
-					button.Image.color = previousAnswer is not null ? _answerButtonStatesConfig.ActiveColor : _answerButtonStatesConfig.PassiveColor;
+					button.Image.color = previousAnswer is not null ? buttonStatesConfig.ActiveColor : buttonStatesConfig.PassiveColor;
 				}
 				else
 				{

@@ -22,6 +22,12 @@ namespace LearningAppVR.UI
 		private ProfilePanel _profilePanel;
 
 		[SerializeField]
+		private SelectRoomPanel _selectRoomPanel;
+
+		[SerializeField]
+		private RoomPanel _roomPanel;
+
+		[SerializeField]
 		private LessonPanel _lessonPanel;
 
 		[Space(10)]
@@ -38,7 +44,9 @@ namespace LearningAppVR.UI
 			_mainMenuPanel.Initialize(this);
 			_settingsPanel.Initialize(this);
 			_profilePanel.Initialize(this);
-			_lessonPanel.Initialize(this);
+			_selectRoomPanel.Initialize(this);
+			_roomPanel.Initialize(this);
+			//_lessonPanel.Initialize(this);
 
 			if (_openByDefault)
 			{
@@ -71,6 +79,18 @@ namespace LearningAppVR.UI
 			OpenNewPanel(_profilePanel);
 		}
 
+		public void OpenSelectRoomPanel(bool needToUpdateRoomsCollection)
+		{
+			CloseCurrentPanel();
+			_selectRoomPanel.Open(needToUpdateRoomsCollection);
+		}
+
+		public void OpenRoomPanel(RoomData roomData)
+		{
+			CloseCurrentPanel();
+			_roomPanel.Open(roomData);
+		}
+		
 		public void OpenLessonPanel()
 		{
 			OpenNewPanel(_lessonPanel);

@@ -12,5 +12,10 @@ namespace LearningAppVR
 		{
 			_lessonController.Initialize(lessonPanel.QuizPanel);
 		}
+
+		public void PrepareLesson(LessonData lessonData)
+		{
+			//TODO: start lesson
+		}
 	}
 }
