@@ -10,7 +10,7 @@ namespace LearningAppVR.UI
 
 		public void Setup(int timeLeftInSeconds)
 		{
-			_timeLeftText.text = timeLeftInSeconds.ToTimeString();
+			_timeLeftText.text = timeLeftInSeconds.ToTimerString();
 		}
 	}
 }

@@ -27,6 +27,13 @@ namespace LearningAppVR.UI
 			_exitButton.onClick.AddListener(OnExitButtonClick);
 		}
 
+		public override void Open()
+		{
+			_startButton.gameObject.SetActive(AppSettings.DeviceType == DeviceType.VR);
+			
+			base.Open();
+		}
+
 		private void OnExitButtonClick()
 		{
 			Application.Quit();

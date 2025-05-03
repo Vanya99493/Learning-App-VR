@@ -1,26 +1,18 @@
-using LearningAppVR.Player;
-using LearningAppVR.UI;
 using NaughtyAttributes;
 using PlayFab;
 using UnityEngine;
 
 namespace LearningAppVR
 {
-	public class GameSceneEntry : MonoBehaviour
+	public class VRGameSceneEntry : EntryPoint
 	{
-		[SerializeField]
-		private PlayerInfo _playerInfo;
-
-		[SerializeField]
-		private UIManager _uiManager;
-
 		[SerializeField]
 		private LessonStarter _lessonStarter;
 
-		private void Awake()
+		protected override void Initialize()
 		{
-			_playerInfo.Initialize();
-			_uiManager.Initialize();
+			base.Initialize();
+			
 			//_lessonStarter.Initialize(_uiManager.LessonPanel);
 		}
 

@@ -29,6 +29,18 @@ namespace LearningAppVR.UI
 
 		[SerializeField]
 		private LessonPanel _lessonPanel;
+		
+		[SerializeField]
+		private OwnedRoomsPanel _ownedRoomsPanel;
+
+		[SerializeField]
+		private RoomEditorPanel _roomEditorPanel;
+
+		[SerializeField]
+		private LessonEditorPanel _lessonEditorPanel;
+
+		[SerializeField]
+		private LeaderboardPanel _leaderboardPanel;
 
 		[Space(10)]
 		[SerializeField]
@@ -47,6 +59,10 @@ namespace LearningAppVR.UI
 			_selectRoomPanel.Initialize(this);
 			_roomPanel.Initialize(this);
 			//_lessonPanel.Initialize(this);
+			_ownedRoomsPanel.Initialize(this);
+			_roomEditorPanel.Initialize(this);
+			_lessonEditorPanel.Initialize(this);
+			_leaderboardPanel.Initialize(this);
 
 			if (_openByDefault)
 			{
@@ -82,18 +98,48 @@ namespace LearningAppVR.UI
 		public void OpenSelectRoomPanel(bool needToUpdateRoomsCollection)
 		{
 			CloseCurrentPanel();
+			_currentActivePanel = _selectRoomPanel;
 			_selectRoomPanel.Open(needToUpdateRoomsCollection);
 		}
 
 		public void OpenRoomPanel(RoomData roomData)
 		{
 			CloseCurrentPanel();
+			_currentActivePanel = _roomPanel;
 			_roomPanel.Open(roomData);
 		}
 		
 		public void OpenLessonPanel()
 		{
 			OpenNewPanel(_lessonPanel);
+		}
+		
+		public void OpenOwnedRoomsPanel(bool needToUpdateRoomsCollection)
+		{
+			CloseCurrentPanel();
+			_currentActivePanel = _ownedRoomsPanel;
+			_ownedRoomsPanel.Open(needToUpdateRoomsCollection);
+		}
+
+		public void OpenRoomEditorPanel(RoomData roomData)
+		{
+			CloseCurrentPanel();
+			_currentActivePanel = _roomEditorPanel;
+			_roomEditorPanel.Open(roomData);
+		}
+
+		public void OpenLessonEditorPanel(LessonData lessonData)
+		{
+			CloseCurrentPanel();
+			_currentActivePanel = _lessonEditorPanel;
+			_lessonEditorPanel.Open(lessonData);
+		}
+
+		public void OpenLeaderboardPanel(RoomLeaderboardData roomLeaderboardData)
+		{
+			CloseCurrentPanel();
+			_currentActivePanel = _leaderboardPanel;
+			_leaderboardPanel.Open(roomLeaderboardData);
 		}
 
 		public void CloseCurrentPanel()

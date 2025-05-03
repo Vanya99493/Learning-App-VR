@@ -26,7 +26,7 @@ namespace LearningAppVR.UI
 		{
 			_lessonName.text = lessonData.LessonName;
 			_difficultyText.text = lessonData.Difficulty.ToString();
-			_timeText.text = lessonData.LessonTime.ToTimeString();
+			_timeText.text = lessonData.LessonTime.ToTimerString();
 			_questionsText.text = lessonData.QuestionsData.Count.ToString();
 			
 			_startLessonButton.onClick.RemoveAllListeners();

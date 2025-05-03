@@ -21,14 +21,19 @@ namespace LearningAppVR.UI
 		[SerializeField]
 		private Button _closeButton;
 
+		[Space(10)]
 		[SerializeField]
 		private RequestRoleContainer _requestRoleContainer;
+
+		[SerializeField]
+		private TeacherToolsContainer _teacherToolsContainer;
 
 		public override void Initialize(IUIManager uiManager)
 		{
 			base.Initialize(uiManager);
 			
-			//_closeButton.onClick.AddListener(_uiManager.CloseCurrentPanel);
+			_teacherToolsContainer.Initialize(() => _uiManager.OpenOwnedRoomsPanel(true));
+			
 			_closeButton.onClick.AddListener(_uiManager.OpenMainMenuPanel);
 			_playerInfo.SubscribeOnFinishInitialization(UpdateAfterUserInfoInitialization);
 		}
@@ -41,6 +46,7 @@ namespace LearningAppVR.UI
 			if (_playerInfo.UserRole == UserRole.Teacher)
 			{
 				_requestRoleContainer.gameObject.SetActive(false);
+				_teacherToolsContainer.gameObject.SetActive(_playerInfo.UserRole == UserRole.Teacher && AppSettings.DeviceType == DeviceType.PC);
 			}
 			else
 			{

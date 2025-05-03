@@ -27,15 +27,13 @@ namespace LearningAppVR.UI
 
 		[Space(10)]
 		[SerializeField]
-		private LeaderboardPanel _leaderboard;
+		private LeaderboardElement _leaderboard;
 
 		public override void Initialize(IUIManager uiManager)
 		{
 			base.Initialize(uiManager);
-			
-			_leaderboard.Initialize(uiManager);
 
-			_lessonsContainer.SelectLevelEvent += OnSelectLevelEventHandler;
+			_lessonsContainer.SelectEvent += OnSelectLevelEventHandler;
 			_lessonInfoContainer.Close();
 		}
 
@@ -44,7 +42,7 @@ namespace LearningAppVR.UI
 			_roomNameText.text = roomData.RoomName;
 			_authorText.text = roomData.Author;
 			_subjectText.text = roomData.SubjectType.ToString();
-			_lessonsContainer.FillLessons(roomData.Lessons);
+			_lessonsContainer.FillContainer(roomData.Lessons);
 			base.Open();
 		}
 

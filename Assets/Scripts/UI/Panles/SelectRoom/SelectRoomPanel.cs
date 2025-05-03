@@ -62,8 +62,6 @@ namespace LearningAppVR.UI
 
 		public void Open(bool needToUpdateRoomsCollection)
 		{
-			base.Open();
-			
 			if (needToUpdateRoomsCollection)
 			{
 				_roomsContainer.ClearRoomsContainer();
@@ -74,6 +72,8 @@ namespace LearningAppVR.UI
 			{
 				FillRoomsContainer(_roomFilters);
 			}
+			
+			base.Open();
 		}
 
 		private async void ObtainRooms(Action callback)

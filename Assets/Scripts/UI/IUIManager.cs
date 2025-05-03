@@ -11,6 +11,10 @@ namespace LearningAppVR.UI
 		void OpenSelectRoomPanel(bool needToUpdateRoomsCollection);
 		void OpenRoomPanel(RoomData roomData);
 		void OpenLessonPanel();
+		void OpenOwnedRoomsPanel(bool needToUpdateRoomsCollection);
+		void OpenRoomEditorPanel(RoomData roomData);
+		void OpenLessonEditorPanel(LessonData lessonData);
+		void OpenLeaderboardPanel(RoomLeaderboardData roomLeaderboardData);
 
 		void CloseCurrentPanel();
 	}
