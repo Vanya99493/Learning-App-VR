@@ -28,23 +28,29 @@ namespace LearningAppVR.UI
 		[SerializeField]
 		private Toggle _increasePointsBeforeTimeoutToggle;
 
+		public LessonData LessonData;
+		public bool IsChanged;
+		
 		public void Initialize()
 		{
 			_randomPoolToggle.onValueChanged.AddListener(ChangeRandomPoolVisibility);
 			_difficultyDropdown.ClearOptions();
 			_difficultyDropdown.AddOptions(GenerateDifficultiesList(10));
+			InitSettingsEvents();
 		}
 		
 		public void SetupSettings(LessonData lessonData)
 		{
-			_lessonNameInputField.text = lessonData.LessonName;
-			_difficultyDropdown.value = lessonData.Difficulty;
-			_timeInputField.text = lessonData.LessonTime.ToBaseTimeString();
-			_randomPoolToggle.isOn = lessonData.EnableRandomQuestionsPool;
-			_randomPoolInputFieldWrapper.InputField.text = lessonData.RandomQuestionsPoolCount.ToString();
+			LessonData = lessonData.Clone();
+			
+			_lessonNameInputField.text = LessonData.LessonName;
+			_difficultyDropdown.value = LessonData.Difficulty;
+			_timeInputField.text = LessonData.LessonTime.ToBaseTimeString();
+			_randomPoolToggle.isOn = LessonData.EnableRandomQuestionsPool;
+			_randomPoolInputFieldWrapper.InputField.text = LessonData.RandomQuestionsPoolCount.ToString();
 			ChangeRandomPoolVisibility(_randomPoolToggle.isOn);
-			_blockAnswersAfterTimeoutToggle.isOn = lessonData.BlockAnswersAfterTimeOut;
-			_increasePointsBeforeTimeoutToggle.isOn = lessonData.IncreasePointsBeforeTimeOut;
+			_blockAnswersAfterTimeoutToggle.isOn = LessonData.BlockAnswersAfterTimeOut;
+			_increasePointsBeforeTimeoutToggle.isOn = LessonData.IncreasePointsBeforeTimeOut;
 		}
 
 		private void ChangeRandomPoolVisibility(bool isOn)
@@ -60,6 +66,51 @@ namespace LearningAppVR.UI
 				difficulties.Add($"{i}");
 			}
 			return difficulties;
+		}
+
+		private void InitSettingsEvents()
+		{
+			_lessonNameInputField.onDeselect.AddListener(value =>
+			{
+				LessonData.LessonName = value;
+				IsChanged = true;
+			});
+			
+			_difficultyDropdown.onValueChanged.AddListener(value =>
+			{
+				LessonData.Difficulty = value + 1;
+				IsChanged = true;
+			});
+			
+			_timeInputField.onDeselect.AddListener(value =>
+			{
+				LessonData.LessonTime = value.FromBaseTimeStringToInt();
+				IsChanged = true;
+			});
+			
+			_randomPoolToggle.onValueChanged.AddListener(value =>
+			{
+				LessonData.EnableRandomQuestionsPool = value;
+				IsChanged = true;
+			});
+			
+			_randomPoolInputFieldWrapper.InputField.onDeselect.AddListener(value =>
+			{
+				LessonData.RandomQuestionsPoolCount = value.ToInt();
+				IsChanged = true;
+			});
+
+			_blockAnswersAfterTimeoutToggle.onValueChanged.AddListener(value =>
+			{
+				LessonData.BlockAnswersAfterTimeOut = value;
+				IsChanged = true;
+			});
+			
+			_increasePointsBeforeTimeoutToggle.onValueChanged.AddListener(value =>
+			{
+				LessonData.IncreasePointsBeforeTimeOut = value;
+				IsChanged = true;
+			});
 		}
 	}
 }

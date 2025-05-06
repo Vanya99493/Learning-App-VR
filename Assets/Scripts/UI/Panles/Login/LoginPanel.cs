@@ -1,4 +1,5 @@
 using LearningAppVR.Player;
+using NaughtyAttributes;
 using PlayFab;
 using UnityEngine;
 
@@ -44,6 +45,7 @@ namespace LearningAppVR.UI
 			base.Close();
 		}
 
+		[Button("Login")]
 		private void OnContinueButtonClickEventHandler()
 		{
 			_continueAsPanel.DisableButtons();

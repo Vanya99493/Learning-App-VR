@@ -3,7 +3,7 @@ using UnityEngine;
 
 namespace LearningAppVR.UI
 {
-	public class AdditionalAddButtonController : MonoBehaviour
+	public class AdditionalButtonController : MonoBehaviour
 	{
 		[SerializeField]
 		private ButtonWrapper _addButtonWrapper;

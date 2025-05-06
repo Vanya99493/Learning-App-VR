@@ -77,6 +77,11 @@ namespace LearningAppVR.Player
 			});
 		}
 
+		public void SaveResult(string roomId, string lessonId, ResultData resultData)
+		{
+			// TODO: add saving of the data and updating leaderboard score logic consider all nuances
+		}
+
 		private async void InitializeUserData()
 		{
 			_playFabServerRequester = new();

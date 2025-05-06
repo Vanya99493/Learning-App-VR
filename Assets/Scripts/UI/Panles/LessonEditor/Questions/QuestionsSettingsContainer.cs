@@ -10,6 +10,9 @@ namespace LearningAppVR.UI
 		[SerializeField]
 		private QuestionEditSettingsContainer _questionEditSettingsContainer;
 
+		public LessonData LessonData;
+		public bool IsChanged;
+		
 		public void Initialize()
 		{
 			_editQuestionsContainer.Initialize(OnAddButtonClick);
@@ -20,11 +23,11 @@ namespace LearningAppVR.UI
 		
 		public void SetupSettings(LessonData lessonData)
 		{
-			if (lessonData.QuestionsData.Count > 0)
-			{
-				
-			}
-			else
+			LessonData = lessonData.Clone();
+			
+			_editQuestionsContainer.FillContainer(LessonData.QuestionsData);
+			
+			if (LessonData.QuestionsData.Count <= 0)
 			{
 				_questionEditSettingsContainer.gameObject.SetActive(false);
 			}
@@ -32,7 +35,9 @@ namespace LearningAppVR.UI
 
 		private void OnAddButtonClick()
 		{
-			_editQuestionsContainer.AddElement(new QuestionData());
+			var questionData = new QuestionData();
+			LessonData.QuestionsData.Add(questionData);
+			_editQuestionsContainer.AddElement(questionData);
 		}
 
 		private void OnSelectQuestionButtonClick(QuestionData questionData)

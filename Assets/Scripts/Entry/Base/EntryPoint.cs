@@ -13,6 +13,9 @@ namespace LearningAppVR
 		private PlayerInfo _playerInfo;
 
 		[SerializeField]
+		private DataProvider _dataProvider;
+
+		[SerializeField]
 		private AppSettings _appSettings;
 
 		private void Awake()
@@ -24,6 +27,8 @@ namespace LearningAppVR
 		{
 			_appSettings.Initialize();
 			_playerInfo.Initialize();
+			_dataProvider.Initialize();
+			
 			_uiManager.Initialize();
 		}
 	}

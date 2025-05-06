@@ -44,6 +44,7 @@ namespace LearningAppVR.UI
 				Destroy(buttonWrapper.gameObject);
 			}
 			_buttonsWrappers.Clear();
+			_lastActiveButtonWrapper = null;
 		}
 
 		protected virtual ButtonWrapper InstantiateButtonWrapper(T dataCollectionElement)

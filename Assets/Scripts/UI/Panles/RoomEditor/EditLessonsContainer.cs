@@ -7,17 +7,17 @@ namespace LearningAppVR.UI
 	public class EditLessonsContainer : LessonsContainer
 	{
 		[SerializeField]
-		private AdditionalAddButtonController _addButtonController;
+		private AdditionalButtonController _additionalButtonController;
 
 		public void Initialize(Action onAddButtonClick)
 		{
-			_addButtonController.Initialize(onAddButtonClick);
+			_additionalButtonController.Initialize(onAddButtonClick);
 		}
 		
 		public override void FillContainer(List<LessonData> lessonsCollection)
 		{
 			base.FillContainer(lessonsCollection);
-			_addButtonController.UpdateAddButtonPosition(_parent);
+			_additionalButtonController.UpdateAddButtonPosition(_parent);
 		}
 	}
 }

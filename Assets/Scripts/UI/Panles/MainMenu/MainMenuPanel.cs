@@ -1,3 +1,4 @@
+using NaughtyAttributes;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -37,6 +38,12 @@ namespace LearningAppVR.UI
 		private void OnExitButtonClick()
 		{
 			Application.Quit();
+		}
+
+		[Button("Open")]
+		public void Foo()
+		{
+			_startButton.onClick.Invoke();
 		}
 	}
 }

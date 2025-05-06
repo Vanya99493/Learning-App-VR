@@ -12,6 +12,26 @@ namespace LearningAppVR
 		public SubjectType SubjectType;
 		public Access Access;
 		public List<LessonData> Lessons = new();
-		public RoomLeaderboardData RoomLeaderboard = new();
+
+		public RoomData Clone()
+		{
+			RoomData clone = new RoomData()
+			{
+				RoomName = RoomName,
+				Author = Author,
+				Id = Id,
+				SubjectType = SubjectType,
+				Access = Access
+			};
+
+			var lessonsClone = new List<LessonData>();
+			foreach (var lesson in Lessons)
+			{
+				lessonsClone.Add(lesson.Clone());
+			}
+			clone.Lessons = lessonsClone;
+			
+			return clone;
+		}
 	}
 }

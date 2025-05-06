@@ -501,7 +501,7 @@ MonoBehaviour:
   _buttonWrapperPrefab: {fileID: 8283000495153505849, guid: c7e11853ca54a914799bdabbaec388f2, type: 3}
   _parent: {fileID: 2503485728071769642}
   _buttonStatesConfig: {fileID: 11400000, guid: 94d7a6bd20e5e5d478f93fe9e8c76f0a, type: 2}
-  _addButtonController: {fileID: 2211806691928337010}
+  _additionalButtonController: {fileID: 2211806691928337010}
 --- !u!114 &2211806691928337010
 MonoBehaviour:
   m_ObjectHideFlags: 0

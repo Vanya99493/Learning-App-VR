@@ -7,23 +7,23 @@ namespace LearningAppVR.UI
 	public class EditQuestionsContainer : ButtonsWrappersContainer<QuestionData>
 	{
 		[SerializeField]
-		private AdditionalAddButtonController _addButtonController;
+		private AdditionalButtonController _additionalButtonController;
 
 		public void Initialize(Action onAddButtonClick)
 		{
-			_addButtonController.Initialize(onAddButtonClick);
+			_additionalButtonController.Initialize(onAddButtonClick);
 		}
 		
 		public override void FillContainer(List<QuestionData> questionsCollection)
 		{
 			base.FillContainer(questionsCollection);
-			_addButtonController.UpdateAddButtonPosition(_parent);
+			_additionalButtonController.UpdateAddButtonPosition(_parent);
 		}
 
 		public override void AddElement(QuestionData dataElement)
 		{
 			base.AddElement(dataElement);
-			_addButtonController.UpdateAddButtonPosition(_parent);
+			_additionalButtonController.UpdateAddButtonPosition(_parent);
 		}
 
 		protected override ButtonWrapper InstantiateButtonWrapper(QuestionData dataCollectionElement)

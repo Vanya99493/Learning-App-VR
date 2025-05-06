@@ -1,5 +1,5 @@
 using System;
-using PlayFab;
+using LearningAppVR.Player;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -8,12 +8,15 @@ namespace LearningAppVR.UI
 	public class OwnedRoomsPanel : BasePanel
 	{
 		[SerializeField]
+		private DataProvider _dataProvider;
+		
+		[Space(10)]
+		[SerializeField]
 		private Button _returnButton;
 
 		[SerializeField]
 		private EditRoomsContainer _editRoomsContainer;
 
-		private PlayFabServerRequester _playFabServerRequester;
 		private RoomsCollection _roomsCollection;
 
 		public override void Initialize(IUIManager uiManager)
@@ -23,7 +26,6 @@ namespace LearningAppVR.UI
 			_editRoomsContainer.Initialize(OnAddButtonClick);
 			_editRoomsContainer.SelectEvent += OnSelectRoom;
 			
-			_playFabServerRequester = new();
 			_returnButton.onClick.AddListener(_uiManager.OpenProfilePanel);
 		}
 
@@ -45,7 +47,7 @@ namespace LearningAppVR.UI
 
 		private async void ObtainRooms(Action callback)
 		{
-			_roomsCollection = await _playFabServerRequester.GetAllRoomsData();
+			_roomsCollection = await _dataProvider.GetRoomsCollection();
 			callback?.Invoke();
 		}
 

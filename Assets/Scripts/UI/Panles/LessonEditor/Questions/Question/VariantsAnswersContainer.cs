@@ -6,7 +6,7 @@ namespace LearningAppVR.UI
 	public class VariantsAnswersContainer : MonoBehaviour
 	{
 		[SerializeField]
-		private AdditionalAddButtonController _addButtonController;
+		private AdditionalButtonController _additionalButtonController;
 
 		[SerializeField]
 		private GridPositionReset _gridPositionReset;
@@ -36,7 +36,7 @@ namespace LearningAppVR.UI
 				
 				variantElement.Initialize();
 			}
-			_addButtonController.Initialize(OnAddVariantButtonClick);
+			_additionalButtonController.Initialize(OnAddVariantButtonClick);
 		}
 		
 		public void Setup(List<string> variants, string correctAnswer)
@@ -87,7 +87,7 @@ namespace LearningAppVR.UI
 				}
 			}
 			
-			_addButtonController.UpdateAddButtonPosition(_parent);
+			_additionalButtonController.UpdateAddButtonPosition(_parent);
 		}
 
 		private void OnRemoveVariant(VariantElement variantElement)
@@ -131,7 +131,7 @@ namespace LearningAppVR.UI
 			variantElement.Setup(variant, isCorrect);
 			_setVariants.Add(new Pair<VariantElement, bool>(variantElement, isCorrect));
 			_gridPositionReset.ResetPosition(variantElement.gameObject, _parent);
-			_addButtonController.UpdateAddButtonPosition(_parent);
+			_additionalButtonController.UpdateAddButtonPosition(_parent);
 		}
 
 		private void OnChangeCorrectVariant(VariantElement variantElement)

@@ -1,5 +1,6 @@
 using System;
 using System.Linq;
+using LearningAppVR.Player;
 using LearningAppVR.Room;
 using PlayFab;
 using TMPro;
@@ -10,6 +11,10 @@ namespace LearningAppVR.UI
 {
 	public class SelectRoomPanel : BasePanel
 	{
+		[SerializeField]
+		private DataProvider _dataProvider;
+		
+		[Space(10)]
 		[SerializeField]
 		private Button _allRoomsSwitchButton;
 
@@ -30,7 +35,6 @@ namespace LearningAppVR.UI
 		[SerializeField]
 		private FiltersContainer _filtersContainer;
 
-		private PlayFabServerRequester _playFabServerRequester;
 		private RoomsCollection _roomsCollection;
 		private RoomStatus _roomsListStatus;
 		private RoomFilters _roomFilters;
@@ -38,8 +42,6 @@ namespace LearningAppVR.UI
 		public override void Initialize(IUIManager uiManager)
 		{
 			base.Initialize(uiManager);
-
-			_playFabServerRequester = new PlayFabServerRequester();
 			
 			_roomFilters = new()
 			{
@@ -65,8 +67,7 @@ namespace LearningAppVR.UI
 			if (needToUpdateRoomsCollection)
 			{
 				_roomsContainer.ClearRoomsContainer();
-				SwitchStatus(RoomStatus.Global);
-				ObtainRooms(() => FillRoomsContainer(_roomFilters));
+				ObtainRooms();
 			}
 			else
 			{
@@ -76,10 +77,10 @@ namespace LearningAppVR.UI
 			base.Open();
 		}
 
-		private async void ObtainRooms(Action callback)
+		private async void ObtainRooms()
 		{
-			_roomsCollection = await _playFabServerRequester.GetAllRoomsData();
-			callback?.Invoke();
+			_roomsCollection = await _dataProvider.GetRoomsCollection();
+			SwitchStatus(RoomStatus.Global);
 		}
 
 		private void FillRoomsContainer(RoomFilters roomFilters)

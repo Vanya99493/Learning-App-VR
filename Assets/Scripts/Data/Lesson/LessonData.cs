@@ -15,5 +15,29 @@ namespace LearningAppVR
 		public bool BlockAnswersAfterTimeOut = false;
 		public bool IncreasePointsBeforeTimeOut = false;
 		public List<QuestionData> QuestionsData = new();
+
+		public LessonData Clone()
+		{
+			LessonData clone = new LessonData()
+			{
+				Id = Id,
+				LessonName = LessonName,
+				Difficulty = Difficulty,
+				LessonTime = LessonTime,
+				EnableRandomQuestionsPool = EnableRandomQuestionsPool,
+				RandomQuestionsPoolCount = RandomQuestionsPoolCount,
+				BlockAnswersAfterTimeOut = BlockAnswersAfterTimeOut,
+				IncreasePointsBeforeTimeOut = IncreasePointsBeforeTimeOut
+			};
+			
+			var questionsClone = new List<QuestionData>();
+			foreach (var lesson in QuestionsData)
+			{
+				questionsClone.Add(lesson.Clone());
+			}
+			clone.QuestionsData = questionsClone;
+
+			return clone;
+		}
 	}
 }

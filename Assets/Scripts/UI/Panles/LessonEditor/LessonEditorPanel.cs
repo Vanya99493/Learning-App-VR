@@ -1,10 +1,14 @@
+using System;
 using UnityEngine;
 using UnityEngine.UI;
 
 namespace LearningAppVR.UI
 {
-	public class LessonEditorPanel : BasePanel
+	public class LessonEditorPanel : BasePanel, ILessonEditor
 	{
+		public event Action<LessonData> SaveLessonEvent;
+		public event Action<LessonData> DeleteLessonEvent;
+		
 		[SerializeField]
 		private Button _saveButton;
 
@@ -18,6 +22,9 @@ namespace LearningAppVR.UI
 		[SerializeField]
 		private Button _questionsSettingsButton;
 
+		[SerializeField]
+		private Button _deleteLessonButton;
+
 		[Space(10)]
 		[SerializeField]
 		private GeneralSettingsContainer _generalSettingsContainer;
@@ -25,13 +32,16 @@ namespace LearningAppVR.UI
 		[SerializeField]
 		private QuestionsSettingsContainer _questionsSettingsContainer;
 
+		private LessonData _lessonData;
+
 		public override void Initialize(IUIManager uiManager)
 		{
 			_saveButton.onClick.AddListener(Save);
-			_returnButton.onClick.AddListener(() => _uiManager.OpenRoomEditorPanel(null));
+			_returnButton.onClick.AddListener(Return);
 			
 			_generalSettingsButton.onClick.AddListener(() => SwitchSettings(SettingsType.General));
 			_questionsSettingsButton.onClick.AddListener(() => SwitchSettings(SettingsType.Questions));
+			_deleteLessonButton.onClick.AddListener(OnDeleteLessonButtonClick);
 			
 			_generalSettingsContainer.Initialize();
 			_questionsSettingsContainer.Initialize();
@@ -41,8 +51,9 @@ namespace LearningAppVR.UI
 
 		public void Open(LessonData lessonData)
 		{
-			_generalSettingsContainer.SetupSettings(lessonData);
-			_questionsSettingsContainer.SetupSettings(lessonData);
+			_lessonData = lessonData.Clone();
+			_generalSettingsContainer.SetupSettings(_lessonData);
+			_questionsSettingsContainer.SetupSettings(_lessonData);
 			SwitchSettings(SettingsType.General);
 			
 			base.Open();
@@ -65,7 +76,72 @@ namespace LearningAppVR.UI
 
 		private void Save()
 		{
-			// TODO: add saving of the data
+			_lessonData = _generalSettingsContainer.LessonData.Clone();
+			
+			_lessonData.QuestionsData.Clear();
+			foreach (var questionData in _questionsSettingsContainer.LessonData.QuestionsData)
+			{
+				_lessonData.QuestionsData.Add(questionData.Clone());
+			}
+			
+			SaveLessonEvent?.Invoke(_lessonData);
+
+			_questionsSettingsContainer.IsChanged = false;
+			_generalSettingsContainer.IsChanged = false;
+		}
+
+		private void Return()
+		{
+			if (_questionsSettingsContainer.IsChanged || _generalSettingsContainer.IsChanged)
+			{
+				_uiManager.ActivatePopup(new PopupData()
+				{
+					PopupTextInfo = "Exit without saving?",
+					FirstButtonData = new ButtonData()
+					{
+						ButtonText = "Exit",
+						ButtonCallback = () =>
+						{
+							_uiManager.DeactivatePopup();
+							_uiManager.OpenRoomEditorPanel(null);
+						}
+					},
+					SecondButtonData = new ButtonData()
+					{
+						ButtonText = "Cancel",
+						ButtonCallback = () =>
+						{
+							_uiManager.DeactivatePopup();
+						}
+					}
+				});
+			}
+		}
+
+		private void OnDeleteLessonButtonClick()
+		{
+			_uiManager.ActivatePopup(new PopupData()
+			{
+				PopupTextInfo = "Do you want to delete the lesson?",
+				FirstButtonData = new ButtonData()
+				{
+					ButtonText = "Confirm",
+					ButtonCallback = () =>
+					{
+						_uiManager.DeactivatePopup();
+						DeleteLessonEvent?.Invoke(_lessonData);
+						_uiManager.OpenRoomEditorPanel(null);
+					}
+				},
+				SecondButtonData = new ButtonData()
+				{
+					ButtonText = "Cancel",
+					ButtonCallback = () =>
+					{
+						_uiManager.DeactivatePopup();
+					}
+				}
+			});
 		}
 	}
 }

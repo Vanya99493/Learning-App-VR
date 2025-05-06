@@ -16,6 +16,8 @@ namespace LearningAppVR.UI
 
 		public void Activate(PopupData popupData)
 		{
+			Deactivate();
+			
 			_infoText.text = popupData.PopupTextInfo;
 
 			_firstButton.Text.text = popupData.FirstButtonData.ButtonText;
@@ -40,6 +42,8 @@ namespace LearningAppVR.UI
 		{
 			_firstButton.Button.onClick.RemoveAllListeners();
 			_secondButton.Button.onClick.RemoveAllListeners();
+			
+			gameObject.SetActive(false);
 		}
 	}
 }
