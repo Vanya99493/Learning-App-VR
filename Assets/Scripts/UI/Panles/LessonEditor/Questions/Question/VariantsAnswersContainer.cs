@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -5,6 +6,8 @@ namespace LearningAppVR.UI
 {
 	public class VariantsAnswersContainer : MonoBehaviour
 	{
+		public event Action<List<Pair<VariantElement, bool>>> UpdateVariantsEvent; 
+
 		[SerializeField]
 		private AdditionalButtonController _additionalButtonController;
 
@@ -33,6 +36,7 @@ namespace LearningAppVR.UI
 			{
 				variantElement.RemoveAction += OnRemoveVariant;
 				variantElement.ChangeCorrectStateEvent += OnChangeCorrectVariant;
+				variantElement.ChangeVariantValueEvent += _ => OnUpdateVariants();
 				
 				variantElement.Initialize();
 			}
@@ -64,7 +68,7 @@ namespace LearningAppVR.UI
 				foreach (var variant in variants)
 				{
 					bool isCorrect = false;
-					if (variant == correctAnswer)
+					if (variant == correctAnswer && correctAnswer != "")
 					{
 						hasCorrect = true;
 						isCorrect = true;
@@ -88,6 +92,7 @@ namespace LearningAppVR.UI
 			}
 			
 			_additionalButtonController.UpdateAddButtonPosition(_parent);
+			OnUpdateVariants();
 		}
 
 		private void OnRemoveVariant(VariantElement variantElement)
@@ -118,6 +123,8 @@ namespace LearningAppVR.UI
 			{
 				variantElement.Setup("", variantElement.IsCorrect);
 			}
+			
+			OnUpdateVariants();
 		}
 
 		private void OnAddVariantButtonClick()
@@ -132,6 +139,8 @@ namespace LearningAppVR.UI
 			_setVariants.Add(new Pair<VariantElement, bool>(variantElement, isCorrect));
 			_gridPositionReset.ResetPosition(variantElement.gameObject, _parent);
 			_additionalButtonController.UpdateAddButtonPosition(_parent);
+			
+			OnUpdateVariants();
 		}
 
 		private void OnChangeCorrectVariant(VariantElement variantElement)
@@ -142,7 +151,12 @@ namespace LearningAppVR.UI
 				{
 					if (variant.Key != variantElement)
 					{
+						variant.Value = false;
 						variant.Key.SetCorrect(false);
+					}
+					else
+					{
+						variant.Value = true;
 					}
 				}
 			}
@@ -150,6 +164,13 @@ namespace LearningAppVR.UI
 			{
 				variantElement.SetCorrect(true);
 			}
+			
+			OnUpdateVariants();
+		}
+
+		private void OnUpdateVariants()
+		{
+			UpdateVariantsEvent?.Invoke(_setVariants);
 		}
 	}
 }

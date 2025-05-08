@@ -10,14 +10,18 @@ namespace LearningAppVR.UI
 		public event Action<T> SelectEvent;
 
 		[SerializeField]
+		protected ButtonStatesConfig _buttonStatesConfig;
+		
+		[SerializeField]
+		protected bool _holdActiveButton = true;
+		
+		[Space(10)]
+		[SerializeField]
 		protected ButtonWrapper _buttonWrapperPrefab;
 
 		[SerializeField]
 		protected Transform _parent;
 
-		[SerializeField]
-		protected ButtonStatesConfig _buttonStatesConfig;
-		
 		protected List<ButtonWrapper> _buttonsWrappers = new();
 		protected ButtonWrapper _lastActiveButtonWrapper;
 
@@ -56,12 +60,16 @@ namespace LearningAppVR.UI
 
 		protected void OnButtonWrapperButtonClickEventHandler(ButtonWrapper buttonWrapper, T dataCollectionElement)
 		{
-			if (_lastActiveButtonWrapper is not null)
+			if (_holdActiveButton)
 			{
-				_lastActiveButtonWrapper.Image.color = _buttonStatesConfig.PassiveColor;
+				if (_lastActiveButtonWrapper is not null)
+				{
+					_lastActiveButtonWrapper.Image.color = _buttonStatesConfig.PassiveColor;
+				}
+				_lastActiveButtonWrapper = buttonWrapper;
+				_lastActiveButtonWrapper.Image.color = _buttonStatesConfig.ActiveColor;
 			}
-			_lastActiveButtonWrapper = buttonWrapper;
-			_lastActiveButtonWrapper.Image.color = _buttonStatesConfig.ActiveColor;
+			
 			SelectEvent?.Invoke(dataCollectionElement);
 		}
 	}

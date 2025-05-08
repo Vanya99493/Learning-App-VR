@@ -13,9 +13,14 @@ namespace LearningAppVR
 		public Access Access;
 		public List<LessonData> Lessons = new();
 
+		public RoomData(string id)
+		{
+			Id = id;
+		}
+
 		public RoomData Clone()
 		{
-			RoomData clone = new RoomData()
+			RoomData clone = new RoomData(Id)
 			{
 				RoomName = RoomName,
 				Author = Author,

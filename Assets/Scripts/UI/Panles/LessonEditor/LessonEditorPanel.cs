@@ -116,6 +116,10 @@ namespace LearningAppVR.UI
 					}
 				});
 			}
+			else
+			{
+				_uiManager.OpenRoomEditorPanel(null);
+			}
 		}
 
 		private void OnDeleteLessonButtonClick()

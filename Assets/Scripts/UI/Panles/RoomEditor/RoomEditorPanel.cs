@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using LearningAppVR.Player;
 using TMPro;
@@ -6,8 +7,10 @@ using UnityEngine.UI;
 
 namespace LearningAppVR.UI
 {
-	public class RoomEditorPanel : BasePanel
+	public class RoomEditorPanel : BasePanel, IRoomEditor
 	{
+		public event Action<RoomData> DeleteRoomEvent;
+
 		[SerializeField]
 		private DataProvider _dataProvider;
 		
@@ -17,6 +20,9 @@ namespace LearningAppVR.UI
 
 		[SerializeField]
 		private TMP_Dropdown _roomSubjectDropdown;
+
+		[SerializeField]
+		private Button _deleteRoomButton;
 
 		[SerializeField]
 		private EditLessonsContainer _editLessonsContainer;
@@ -40,6 +46,11 @@ namespace LearningAppVR.UI
 			_uiManager.LessonEditor.SaveLessonEvent += OnSaveLessonEventHandler;
 			_uiManager.LessonEditor.DeleteLessonEvent += OnDeleteLessonEventHandler;
 			
+			_roomNameInputField.onDeselect.AddListener(OnRoomNameChangedEventHandler);
+			_roomSubjectDropdown.onValueChanged.AddListener(OnRoomSubjectChangedEventHandler);
+			
+			_deleteRoomButton.onClick.AddListener(DeleteRoom);
+			
 			_editLessonsContainer.Initialize(OnAddLessonEventHandler);
 			_editLessonsContainer.SelectEvent += OnSelectLevelEventHandler;
 			
@@ -58,6 +69,10 @@ namespace LearningAppVR.UI
 			if (roomData != null)
 			{
 				_roomData = roomData.Clone();
+			}
+
+			if (_roomData != null)
+			{
 				_leaderboardButton.onClick.RemoveAllListeners();
 				_leaderboardButton.onClick.AddListener(() => _uiManager.OpenLeaderboardPanel(_dataProvider.GetLeaderboardData(_roomData.Id)));
 				_roomNameInputField.text = _roomData.RoomName;
@@ -75,8 +90,7 @@ namespace LearningAppVR.UI
 
 		private void OnAddLessonEventHandler()
 		{
-			var lessonData = new LessonData();
-			_roomData.Lessons.Add(lessonData);
+			var lessonData = new LessonData(LocalIdGenerator.GetId());
 			_uiManager.OpenLessonEditorPanel(lessonData);
 		}
 
@@ -102,11 +116,22 @@ namespace LearningAppVR.UI
 			});
 		}
 
+		private void OnRoomNameChangedEventHandler(string value)
+		{
+			_roomData.RoomName = value;
+		}
+
+		private void OnRoomSubjectChangedEventHandler(int valueIndex)
+		{
+			_roomData.SubjectType = (SubjectType)valueIndex;
+		}
+
 		private async void SaveRoom()
 		{
 			if (_validator.Validate())
 			{
 				await _dataProvider.SaveRoomData(_roomData);
+				_uiManager.DeactivatePopup();
 				_uiManager.OpenOwnedRoomsPanel(true);
 			}
 			else
@@ -124,6 +149,32 @@ namespace LearningAppVR.UI
 					}
 				});
 			}
+		}
+
+		private void DeleteRoom()
+		{
+			_uiManager.ActivatePopup(new PopupData()
+			{
+				PopupTextInfo = "Do you want to delete the room?",
+				FirstButtonData = new ButtonData()
+				{
+					ButtonText = "Confirm",
+					ButtonCallback = () =>
+					{
+						_uiManager.DeactivatePopup();
+						DeleteRoomEvent?.Invoke(_roomData);
+						_uiManager.OpenOwnedRoomsPanel(false);
+					}
+				},
+				SecondButtonData = new ButtonData()
+				{
+					ButtonText = "Cancel",
+					ButtonCallback = () =>
+					{
+						_uiManager.DeactivatePopup();
+					}
+				}
+			});
 		}
 
 		private void OnSaveLessonEventHandler(LessonData lessonToSave)
@@ -147,7 +198,7 @@ namespace LearningAppVR.UI
 			}
 			else
 			{
-				Debug.LogError($"Cannot find the lesson {lessonToSave.Id}");
+				_roomData.Lessons.Add(lessonToSave.Clone());
 			}
 		}
 

@@ -19,5 +19,12 @@ namespace LearningAppVR.UI
 			base.FillContainer(dataCollection);
 			_additionalButtonController.UpdateAddButtonPosition(_parent);
 		}
+
+		protected override ButtonWrapper InstantiateButtonWrapper(RoomData dataCollectionElement)
+		{
+			var buttonWrapper = base.InstantiateButtonWrapper(dataCollectionElement);
+			buttonWrapper.Text.text = dataCollectionElement.RoomName;
+			return buttonWrapper;
+		}
 	}
 }

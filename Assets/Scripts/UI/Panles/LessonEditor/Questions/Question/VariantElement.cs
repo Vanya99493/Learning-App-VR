@@ -9,6 +9,7 @@ namespace LearningAppVR.UI
 	{
 		public event Action<VariantElement> RemoveAction;
 		public event Action<VariantElement> ChangeCorrectStateEvent;
+		public event Action<VariantElement> ChangeVariantValueEvent;
 		
 		[SerializeField]
 		private Toggle _isCorrectAnswerToggle;
@@ -21,11 +22,13 @@ namespace LearningAppVR.UI
 
 		public bool IsActive { get; private set; }
 		public bool IsCorrect => _isCorrectAnswerToggle.isOn;
+		public string VariantValue => _variantInputField.text;
 
 		public void Initialize()
 		{
 			_removeButton.onClick.AddListener(OnRemoveButtonClick);
 			_isCorrectAnswerToggle.onValueChanged.AddListener(OnIsCorrectValueChangedEvent);
+			_variantInputField.onDeselect.AddListener(OnVariantValueChangedEventHandler);
 		}
 		
 		public void Setup(string answer, bool isCorrect = false)
@@ -58,6 +61,11 @@ namespace LearningAppVR.UI
 		private void OnIsCorrectValueChangedEvent(bool isOn)
 		{
 			ChangeCorrectStateEvent?.Invoke(this);
+		}
+
+		private void OnVariantValueChangedEventHandler(string value)
+		{
+			ChangeVariantValueEvent?.Invoke(this);
 		}
 	}
 }

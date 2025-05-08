@@ -16,9 +16,14 @@ namespace LearningAppVR
 		public bool IncreasePointsBeforeTimeOut = false;
 		public List<QuestionData> QuestionsData = new();
 
+		public LessonData(string id)
+		{
+			Id = id;
+		}
+		
 		public LessonData Clone()
 		{
-			LessonData clone = new LessonData()
+			LessonData clone = new LessonData(Id)
 			{
 				Id = Id,
 				LessonName = LessonName,

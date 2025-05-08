@@ -50,6 +50,7 @@ namespace LearningAppVR.UI
 
 		public LessonPanel LessonPanel => _lessonPanel;
 		public ILessonEditor LessonEditor => _lessonEditorPanel;
+		public IRoomEditor RoomEditor => _roomEditorPanel;
 
 		public void Initialize()
 		{

@@ -35,7 +35,7 @@ namespace LearningAppVR.UI
 
 		private void OnAddButtonClick()
 		{
-			var questionData = new QuestionData();
+			var questionData = new QuestionData(LocalIdGenerator.GetId());
 			LessonData.QuestionsData.Add(questionData);
 			_editQuestionsContainer.AddElement(questionData);
 		}

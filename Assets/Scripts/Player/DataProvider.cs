@@ -18,6 +18,25 @@ namespace LearningAppVR.Player
 			return await _playFabServerRequester.GetAllRoomsData();
 		}
 
+		public async Task DeleteRoomData(RoomData roomToDelete)
+		{
+			var roomsCollection = await GetRoomsCollection();
+
+			int index = 0;
+			foreach (var roomData in roomsCollection.Rooms)
+			{
+				if (roomData.Id == roomToDelete.Id)
+				{
+					roomsCollection.Rooms.RemoveAt(index);
+					break;
+				}
+
+				index++;
+			}
+			
+			await _playFabServerRequester.UpdateRoomsData(roomsCollection);
+		}
+
 		public async Task SaveRoomData(RoomData roomData)
 		{
 			var roomsCollection = await GetRoomsCollection();

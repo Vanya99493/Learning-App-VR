@@ -3,6 +3,7 @@ namespace LearningAppVR.UI
 	public interface IUIManager
 	{
 		ILessonEditor LessonEditor { get; }
+		IRoomEditor RoomEditor { get; }
 		
 		void ActivatePopup(PopupData popupData);
 		void DeactivatePopup();

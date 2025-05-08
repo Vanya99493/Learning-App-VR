@@ -23,6 +23,8 @@ namespace LearningAppVR.UI
 		{
 			base.Initialize(uiManager);
 
+			_uiManager.RoomEditor.DeleteRoomEvent += OnDeleteRoomEventHandler;
+
 			_editRoomsContainer.Initialize(OnAddButtonClick);
 			_editRoomsContainer.SelectEvent += OnSelectRoom;
 			
@@ -58,12 +60,18 @@ namespace LearningAppVR.UI
 
 		private void OnAddButtonClick()
 		{
-			_uiManager.OpenRoomEditorPanel(new RoomData());
+			_uiManager.OpenRoomEditorPanel(new RoomData(LocalIdGenerator.GetId()));
 		}
 
 		private void OnSelectRoom(RoomData roomData)
 		{
 			_uiManager.OpenRoomEditorPanel(roomData);
+		}
+
+		private async void OnDeleteRoomEventHandler(RoomData roomToDelete)
+		{
+			await _dataProvider.DeleteRoomData(roomToDelete);
+			ObtainRooms(FillRooms);
 		}
 	}
 }
