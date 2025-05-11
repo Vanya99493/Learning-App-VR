@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace LearningAppVR
 {
@@ -19,6 +20,11 @@ namespace LearningAppVR
 		public LessonData(string id)
 		{
 			Id = id;
+		}
+
+		public int GetGlobalPoints()
+		{
+			return QuestionsData.Sum(questionData => questionData.Points);
 		}
 		
 		public LessonData Clone()

@@ -62,6 +62,11 @@ namespace LearningAppVR.UI
 
 		private void OnUpdateVariantsEventHandler(List<Pair<VariantElement, bool>> setVariants)
 		{
+			if (_questionData.QuestionType != QuestionType.Variants)
+			{
+				return;
+			}
+			
 			_questionData.Answers.Clear();
 			foreach (var variantPair in setVariants)
 			{
@@ -75,6 +80,10 @@ namespace LearningAppVR.UI
 
 		private void OnUpdateCorrectAnswerEventHandler(string newCorrectAnswer)
 		{
+			if (_questionData.QuestionType != QuestionType.Input)
+			{
+				return;
+			}
 			_questionData.CorrectAnswer = newCorrectAnswer;
 		}
 	}

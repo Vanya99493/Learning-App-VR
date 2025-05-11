@@ -4,52 +4,39 @@ using UnityEngine;
 
 namespace LearningAppVR.UI
 {
-	public class RoomsContainer : MonoBehaviour
+	public class RoomsContainer : ElementsContainer<RoomElement, RoomData>
 	{
 		public event Action<RoomData> SelectRoomEvent;
 
 		[SerializeField]
-		private RoomElement _roomElementPrefab;
-
-		[SerializeField]
-		private Transform _roomElementsParent;
-
-		[SerializeField]
 		private GameObject _emptyTitle;
-		
-		private List<RoomElement> _spawnedRoomButtons = new();
-		
-		public void ClearRoomsContainer()
-		{
-			foreach (var spawnedRoomButton in _spawnedRoomButtons)
-			{
-				spawnedRoomButton.Destroy();
-			}
-			_spawnedRoomButtons.Clear();
-			
-			_emptyTitle.gameObject.SetActive(true);
-		}
 
-		public void InitializeRooms(List<RoomData> rooms)
+		public override void FillContainer(List<RoomData> dataCollection)
 		{
-			if (rooms.Count > 0)
+			base.FillContainer(dataCollection);
+			if (dataCollection.Count > 0)
 			{
 				_emptyTitle.gameObject.SetActive(false);
 			}
-			
-			foreach (var roomData in rooms)
-			{
-				var room = InstantiateRoom(roomData);
-				_spawnedRoomButtons.Add(room);
-			}
 		}
 
-		private RoomElement InstantiateRoom(RoomData roomData)
+		public void ClearRoomsContainer()
 		{
-			var roomElement = Instantiate(_roomElementPrefab, _roomElementsParent);
-			roomElement.DestroyEvent += DestroyRoomElement;
-			roomElement.Initialize(roomData, OnSelectRoom);
-			return roomElement;
+			ResetElements();
+		}
+		
+		protected override void ResetElements()
+		{
+			base.ResetElements();
+			_emptyTitle.gameObject.SetActive(true);
+		}
+
+		protected override RoomElement InstantiateElement(RoomData dataElement)
+		{
+			var element = base.InstantiateElement(dataElement);
+			element.DestroyEvent += DestroyRoomElement;
+			element.Initialize(dataElement, OnSelectRoom);
+			return element;
 		}
 
 		private void OnSelectRoom(RoomData roomData)

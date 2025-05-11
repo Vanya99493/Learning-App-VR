@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Events;
@@ -28,6 +29,16 @@ namespace LearningAppVR.UI
 				_deniedValidationmUnityEvent?.Invoke();
 				return false;
 			}
+		}
+
+		public void Deactivate()
+		{
+			_passValidationUnityEvent?.Invoke();
+		}
+
+		private void OnDisable()
+		{
+			Deactivate();
 		}
 
 		protected abstract bool CheckValidation();

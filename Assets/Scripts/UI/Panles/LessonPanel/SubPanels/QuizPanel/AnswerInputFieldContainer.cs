@@ -1,7 +1,6 @@
 using System;
 using TMPro;
 using UnityEngine;
-using UnityEngine.UI;
 
 namespace LearningAppVR.UI
 {
@@ -10,12 +9,9 @@ namespace LearningAppVR.UI
 		[SerializeField]
 		private TMP_InputField _answerInputField;
 
-		[SerializeField]
-		private Button _confirmButton;
-
 		public void Initialize(Action<string> onSelectAnswer)
 		{
-			_confirmButton.onClick.AddListener(() => onSelectAnswer?.Invoke(_answerInputField.text));
+			_answerInputField.onValueChanged.AddListener(value => onSelectAnswer?.Invoke(value));
 		}
 
 		public void Setup(string previousAnswer = null)

@@ -25,9 +25,9 @@ namespace LearningAppVR.UI
 		public void Open(LessonData lessonData, Action<LessonData> onStartButtonClick)
 		{
 			_lessonName.text = lessonData.LessonName;
-			_difficultyText.text = lessonData.Difficulty.ToString();
-			_timeText.text = lessonData.LessonTime.ToTimerString();
-			_questionsText.text = lessonData.QuestionsData.Count.ToString();
+			_difficultyText.text = $"Difficulty: {lessonData.Difficulty + 1}";
+			_timeText.text = $"Time: {lessonData.LessonTime.ToTimerString()}";
+			_questionsText.text = $"Questions: {lessonData.QuestionsData.Count}";
 			
 			_startLessonButton.onClick.RemoveAllListeners();
 			_startLessonButton.onClick.AddListener(() => onStartButtonClick?.Invoke(lessonData));

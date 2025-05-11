@@ -60,7 +60,7 @@ namespace LearningAppVR.UI
 			_profilePanel.Initialize(this);
 			_selectRoomPanel.Initialize(this);
 			_roomPanel.Initialize(this);
-			//_lessonPanel.Initialize(this);
+			_lessonPanel.Initialize(this);
 			_ownedRoomsPanel.Initialize(this);
 			_roomEditorPanel.Initialize(this);
 			_lessonEditorPanel.Initialize(this);
@@ -111,9 +111,11 @@ namespace LearningAppVR.UI
 			_roomPanel.Open(roomData);
 		}
 		
-		public void OpenLessonPanel()
+		public void OpenLessonPanel(string roomId, LessonData lessonData)
 		{
-			OpenNewPanel(_lessonPanel);
+			CloseCurrentPanel();
+			_currentActivePanel = _lessonPanel;
+			_lessonPanel.Open(roomId, lessonData);
 		}
 		
 		public void OpenOwnedRoomsPanel(bool needToUpdateRoomsCollection)
@@ -137,11 +139,11 @@ namespace LearningAppVR.UI
 			_lessonEditorPanel.Open(lessonData);
 		}
 
-		public void OpenLeaderboardPanel(RoomLeaderboardData roomLeaderboardData)
+		public void OpenLeaderboardPanel(string roomId)
 		{
 			CloseCurrentPanel();
 			_currentActivePanel = _leaderboardPanel;
-			_leaderboardPanel.Open(roomLeaderboardData);
+			_leaderboardPanel.Open(roomId);
 		}
 
 		public void CloseCurrentPanel()

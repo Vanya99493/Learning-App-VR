@@ -64,9 +64,9 @@ namespace LearningAppVR.Player
 			await _playFabServerRequester.UpdateRoomsData(roomsCollection);
 		}
 
-		public RoomLeaderboardData GetLeaderboardData(string roomId)
+		public async Task<RoomLeaderboardData> GetLeaderboardData(string roomId)
 		{
-			return new RoomLeaderboardData();
+			return await _playFabServerRequester.GetLeaderboard(roomId);
 		}
 	}
 }

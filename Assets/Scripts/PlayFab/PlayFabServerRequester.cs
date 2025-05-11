@@ -9,11 +9,10 @@ namespace PlayFab
 {
 	public class PlayFabServerRequester
 	{
-		private const string PLAYFAB_KEY_SHARED_ROOM_NAME = "SharedRoom";
 		private const string PLAYFAB_KEY_ROOMS_DATA = "Rooms Data";
-		
 		private const string PLAYFAB_KEY_PERSONAL_DATA = "Personal Data";
 		private const string PLAYFAB_KEY_REQUESTS_DATA = "Requests Data";
+		private const string PLAYFAB_KEY_RESULTS_DATA = "Results Data";
 		
 		public async Task<UserData> GetUserData()
 		{
@@ -39,15 +38,6 @@ namespace PlayFab
 			{
 				userData.PersonalData = new PersonalData();
 				SavePersonalData(userData.PersonalData);
-			}
-			
-			if (result.Data.TryGetValue(PLAYFAB_KEY_PERSONAL_DATA, out var teacherRooms))
-			{
-				userData.OwnedRoomsCollection = JsonUtility.FromJson<OwnedRoomsCollection>(teacherRooms.Value);
-			}
-			else
-			{
-				userData.OwnedRoomsCollection = new OwnedRoomsCollection();
 			}
 
 			return userData;
@@ -82,6 +72,8 @@ namespace PlayFab
 				});
 
 			await tcs.Task;
+			
+			// TODO: add validation on the owned rooms data. Now it returns all rooms (or add additional method to return only owned rooms)
 
 			return tcs.Task.Result;
 		}
@@ -117,7 +109,126 @@ namespace PlayFab
 			return tcs.Task.Result;
 		}
 
-		public void SavePersonalData(PersonalData personalData)
+		public async Task<RoomLeaderboardData> GetLeaderboard(string roomId)
+		{
+			var tcs = new TaskCompletionSource<RoomLeaderboardData>();
+			
+			var request = new GetLeaderboardRequest
+			{
+				StatisticName = $"{roomId}",
+				StartPosition = 0,
+				MaxResultsCount = 100
+			};
+			PlayFabClientAPI.GetLeaderboard(request,
+				result => tcs.SetResult(GetRoomLeaderboard(result)),
+				error => tcs.SetException(new Exception(error.GenerateErrorReport())));
+
+			return await tcs.Task;
+		}
+		
+		private RoomLeaderboardData GetRoomLeaderboard(GetLeaderboardResult result)
+		{
+			RoomLeaderboardData leaderboardCollection = new();
+			foreach (var leaderboardEntry in result.Leaderboard)
+			{
+				leaderboardCollection.UserResults.Add(new UserResult()
+				{
+					Position = (leaderboardEntry.Position + 1).ToString(),
+					UserName = leaderboardEntry.DisplayName,
+					Score = leaderboardEntry.StatValue
+				});
+			}
+
+			return leaderboardCollection;
+		}
+		
+		public async Task SaveUserResult(ResultData resultData)
+		{
+			var userResultsCollection = await GetUserStatistics();
+
+			Debug.Log($"Results count {userResultsCollection.Results.Count}");
+			bool findResult = false;
+			foreach (var previousResultData in userResultsCollection.Results)
+			{
+				if (previousResultData.RoomId == resultData.RoomId &&
+				    previousResultData.LessonId == resultData.LessonId)
+				{
+					if (previousResultData.EarnedPoints < resultData.EarnedPoints)
+					{
+						Debug.Log($"Change old result ({previousResultData.EarnedPoints}) to {resultData.EarnedPoints}");
+						previousResultData.EarnedPoints = resultData.EarnedPoints;
+						SendLeaderboard(resultData.RoomId, CalculateRoomScore(userResultsCollection, resultData.RoomId));
+						SaveResultsData(userResultsCollection);
+					}
+					findResult = true;
+					break;
+				}
+			}
+
+			if (!findResult)
+			{
+				Debug.Log($"Add new result {resultData.EarnedPoints}");
+				userResultsCollection.Results.Add(resultData);
+				SendLeaderboard(resultData.RoomId, CalculateRoomScore(userResultsCollection, resultData.RoomId));
+				SaveResultsData(userResultsCollection);
+			}
+		}
+
+		private async Task<ResultsCollectionData> GetUserStatistics()
+		{
+			var tcs = new TaskCompletionSource<ResultsCollectionData>();
+			
+			PlayFabClientAPI.GetUserData(
+				new GetUserDataRequest(),
+				result => tcs.SetResult(ParseUserStatistics(result)), 
+				error => tcs.SetException(new Exception(error.GenerateErrorReport())));
+
+			return await tcs.Task;
+		}
+
+		private ResultsCollectionData ParseUserStatistics(GetUserDataResult result)
+		{
+			ResultsCollectionData userResults = new();
+			
+			if (result.Data.TryGetValue(PLAYFAB_KEY_RESULTS_DATA, out var personalData))
+			{
+				userResults = JsonUtility.FromJson<ResultsCollectionData>(personalData.Value);
+			}
+			else
+			{
+				userResults = new ResultsCollectionData();
+			}
+
+			return userResults;
+		}
+		
+		private void SendLeaderboard(string roomId, int score)
+		{
+			var request = new UpdatePlayerStatisticsRequest
+			{
+				Statistics = new List<StatisticUpdate>
+				{
+					new StatisticUpdate
+					{
+						StatisticName = roomId,
+						Value = score
+					}
+				}
+			};
+			PlayFabClientAPI.UpdatePlayerStatistics(request, OnLeaderboardUpdate, OnError);
+		}
+
+		public void SaveRoleRequest(RoleRequestData roleRequestData)
+		{
+			var playerStatistics = new Dictionary<string, string>()
+			{
+				{ PLAYFAB_KEY_REQUESTS_DATA, JsonUtility.ToJson(roleRequestData) }
+			};
+			
+			SavePlayerStatistics(playerStatistics);
+		}
+
+		private void SavePersonalData(PersonalData personalData)
 		{
 			var playerStatistics = new Dictionary<string, string>()
 			{
@@ -127,11 +238,11 @@ namespace PlayFab
 			SavePlayerStatistics(playerStatistics);
 		}
 
-		public void SaveRoleRequest(RoleRequestData roleRequestData)
+		private void SaveResultsData(ResultsCollectionData resultsCollectionData)
 		{
 			var playerStatistics = new Dictionary<string, string>()
 			{
-				{ PLAYFAB_KEY_REQUESTS_DATA, JsonUtility.ToJson(roleRequestData) }
+				{ PLAYFAB_KEY_RESULTS_DATA, JsonUtility.ToJson(resultsCollectionData) }
 			};
 			
 			SavePlayerStatistics(playerStatistics);
@@ -147,27 +258,28 @@ namespace PlayFab
 			PlayFabClientAPI.UpdateUserData(request, OnPublicDataSend, OnError);
 		}
 
-		private void CreateSharedRoom()
+		private int CalculateRoomScore(ResultsCollectionData resultsCollectionData, string targetRoomId)
 		{
-			var request = new CreateSharedGroupRequest
+			int score = 0;
+			foreach (var resultData in resultsCollectionData.Results)
 			{
-				SharedGroupId = PLAYFAB_KEY_SHARED_ROOM_NAME
-			};
-
-			PlayFabClientAPI.CreateSharedGroup(request,
-				result =>
+				if (resultData.RoomId == targetRoomId)
 				{
-					Debug.Log("Shared group created");
-				},
-				error =>
-				{
-					Debug.LogError("Failed to create shared group: " + error.GenerateErrorReport());
-				});
+					score += resultData.EarnedPoints;
+				}
+			}
+			
+			return score;
 		}
 
 		private void OnPublicDataSend(UpdateUserDataResult result)
 		{
 			Debug.Log("Successful public statistics send");
+		}
+
+		private void OnLeaderboardUpdate(UpdatePlayerStatisticsResult result)
+		{
+			Debug.Log("Successful update leaderboard score");
 		}
 
 		private void OnError(PlayFabError error)

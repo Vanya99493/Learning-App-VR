@@ -6,6 +6,6 @@ namespace LearningAppVR
 	[Serializable]
 	public class RoomLeaderboardData
 	{
-		public List<ResultData> Results;
+		public List<UserResult> UserResults = new();
 	}
 }

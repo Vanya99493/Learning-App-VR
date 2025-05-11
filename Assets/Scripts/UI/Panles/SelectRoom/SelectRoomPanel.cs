@@ -2,7 +2,6 @@ using System;
 using System.Linq;
 using LearningAppVR.Player;
 using LearningAppVR.Room;
-using PlayFab;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
@@ -95,7 +94,7 @@ namespace LearningAppVR.UI
 					roomData.Access == roomFilters.Access)
 				.ToList();
 
-			_roomsContainer.InitializeRooms(filteredRoomsCollection);
+			_roomsContainer.FillContainer(filteredRoomsCollection);
 		}
 
 		private void SwitchStatus(RoomStatus roomStatus)

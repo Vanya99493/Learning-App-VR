@@ -9,6 +9,9 @@ namespace LearningAppVR.UI
 		private TMP_InputField _questionInputField;
 
 		[SerializeField]
+		private PointsElement _pointsElement;
+
+		[SerializeField]
 		private AnswerSelectionContainer _answerSelectionContainer;
 
 		private QuestionData _questionData;
@@ -24,6 +27,7 @@ namespace LearningAppVR.UI
 		{
 			_questionData = questionData;
 			_questionInputField.text = _questionData.Question;
+			_pointsElement.Setup(_questionData);
 			_answerSelectionContainer.Setup(_questionData);
 		}
 

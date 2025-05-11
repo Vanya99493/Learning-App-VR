@@ -78,7 +78,7 @@ namespace LearningAppVR.UI
 			
 			_difficultyDropdown.onValueChanged.AddListener(value =>
 			{
-				LessonData.Difficulty = value + 1;
+				LessonData.Difficulty = value;
 				IsChanged = true;
 			});
 			
@@ -96,7 +96,7 @@ namespace LearningAppVR.UI
 			
 			_randomPoolInputFieldWrapper.InputField.onDeselect.AddListener(value =>
 			{
-				LessonData.RandomQuestionsPoolCount = value.ToInt();
+				LessonData.RandomQuestionsPoolCount = _randomPoolInputFieldWrapper.GetInputFieldValueInInt();
 				IsChanged = true;
 			});
 

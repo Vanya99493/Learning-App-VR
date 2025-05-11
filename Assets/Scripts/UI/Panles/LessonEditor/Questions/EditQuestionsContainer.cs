@@ -20,16 +20,17 @@ namespace LearningAppVR.UI
 			_additionalButtonController.UpdateAddButtonPosition(_parent);
 		}
 
-		public override void AddElement(QuestionData dataElement)
+		public override ButtonWrapper AddElement(QuestionData dataElement)
 		{
-			base.AddElement(dataElement);
+			var element = base.AddElement(dataElement);
 			_additionalButtonController.UpdateAddButtonPosition(_parent);
+			return element;
 		}
 
-		protected override ButtonWrapper InstantiateButtonWrapper(QuestionData dataCollectionElement)
+		protected override ButtonWrapper InstantiateElement(QuestionData dataCollectionElement)
 		{
-			var buttonWrapper = base.InstantiateButtonWrapper(dataCollectionElement);
-			buttonWrapper.Text.text = (_buttonsWrappers.Count + 1).ToString();
+			var buttonWrapper = base.InstantiateElement(dataCollectionElement);
+			buttonWrapper.Text.text = (_elements.Count + 1).ToString();
 			return buttonWrapper;
 		}
 	}

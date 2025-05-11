@@ -1,12 +1,20 @@
 using System;
+using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 namespace LearningAppVR.UI
 {
 	public class QuizPanel : LessonSubPanel
 	{
+		public event Action LessonTimeEndEvent;
+		public event Action FinishLessonEvent;
+
 		[SerializeField]
 		private TimeCountElement _timeCountElement;
+
+		[SerializeField]
+		private Button _finishButton;
 
 		[SerializeField]
 		private QuestionContainer _questionContainer;
@@ -16,39 +24,73 @@ namespace LearningAppVR.UI
 
 		public void Initialize(Action<string> onSelectAnswer)
 		{
+			_timeCountElement.Initialize();
 			_questionContainer.Initialize(onSelectAnswer);
+			
+			_finishButton.onClick.AddListener(OnFinishButtonClick);
+
+			_timeCountElement.TimerEndEvent += OnEndTimerEventHandler;
 		}
 
-		public void InitializeQuestionsButtons(int questionsCount, Action<int> onQuestionButtonClickCallback)
+		public void Open(int timeInSeconds)
 		{
-			_questionsContainer.ResetContainer();
-			for (int i = 0; i < questionsCount; i++)
-			{
-				_questionsContainer.AddQuestionButton(onQuestionButtonClickCallback);
-			}
+			_timeCountElement.Setup(timeInSeconds);
+			base.Open();
 		}
 
-		public void SetupQuestion(QuestionData questionData, string previouslySelectedAnswer = null)
+		public void InitializeQuestionsButtons(int questionsCount, Action<int> onQuestionButtonClick)
+		{
+			List<int> intCollection = new();
+			for (int i = 1; i <= questionsCount; i++)
+			{
+				intCollection.Add(i);
+			}
+			_questionsContainer.FillContainer(intCollection);
+			_questionsContainer.SelectEvent += onQuestionButtonClick;
+		}
+
+		public void SetupQuestion(QuestionData questionData, string previousAnswer)
 		{
 			switch (questionData.QuestionType)
 			{
 				case QuestionType.Variants:
-					_questionContainer.SetupVariantsForAnswer(questionData.Question, questionData.Answers);
+					_questionContainer.SetupVariantsForAnswer(questionData.Question, questionData.Answers, previousAnswer);
 					break;
 				case QuestionType.Input:
-					_questionContainer.SetupInputFieldForAnswer(questionData.Question);
+					_questionContainer.SetupInputFieldForAnswer(questionData.Question, previousAnswer);
 					break;
 			}
 		}
 
-		public void SetupButtonWrapperState(int buttonWrapperIndex, ButtonStateType stateType)
+		private void OnEndTimerEventHandler()
 		{
-			_questionsContainer.SetupButtonWrapperState(buttonWrapperIndex, stateType);
+			_lessonPanel.UIManager.DeactivatePopup();
+			LessonTimeEndEvent?.Invoke();
 		}
 
-		public void UpdateTimeCountUI(int timeLeftInSeconds)
+		private void OnFinishButtonClick()
 		{
-			_timeCountElement.Setup(timeLeftInSeconds);
+			_lessonPanel.UIManager.ActivatePopup(new PopupData()
+			{
+				PopupTextInfo = "Finish the lesson?",
+				FirstButtonData = new ButtonData()
+				{
+					ButtonText = "Confirm",
+					ButtonCallback = () =>
+					{
+						_lessonPanel.UIManager.DeactivatePopup();
+						FinishLessonEvent?.Invoke();
+					}
+				},
+				SecondButtonData = new ButtonData()
+				{
+					ButtonText = "Cancel",
+					ButtonCallback = () =>
+					{
+						_lessonPanel.UIManager.DeactivatePopup();
+					}
+				}
+			});
 		}
 	}
 }

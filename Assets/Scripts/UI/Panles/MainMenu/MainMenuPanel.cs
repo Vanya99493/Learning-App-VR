@@ -30,7 +30,7 @@ namespace LearningAppVR.UI
 
 		public override void Open()
 		{
-			_startButton.gameObject.SetActive(AppSettings.DeviceType == DeviceType.VR);
+			_startButton.gameObject.SetActive(!AppSettings.BlockLessonsExperienceOnPC || AppSettings.DeviceType == DeviceType.VR);
 			
 			base.Open();
 		}

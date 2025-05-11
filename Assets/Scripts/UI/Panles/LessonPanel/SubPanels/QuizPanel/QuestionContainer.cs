@@ -19,7 +19,7 @@ namespace LearningAppVR.UI
 		public void Initialize(Action<string> onSelectAnswer)
 		{
 			_answerInputFieldContainer.Initialize(onSelectAnswer);
-			_answerButtonsContainer.Initialize(onSelectAnswer);
+			_answerButtonsContainer.SelectEvent += onSelectAnswer;
 		}
 		
 		public void SetupInputFieldForAnswer(string question, string previousAnswer = null)
@@ -34,7 +34,7 @@ namespace LearningAppVR.UI
 		public void SetupVariantsForAnswer(string question, List<string> answers, string previousAnswer = null)
 		{
 			_questionText.text = question;
-			_answerButtonsContainer.Setup(answers, previousAnswer);
+			_answerButtonsContainer.FillContainer(answers, previousAnswer);
 			
 			_answerInputFieldContainer.gameObject.SetActive(false);
 			_answerButtonsContainer.gameObject.SetActive(true);

@@ -74,7 +74,7 @@ namespace LearningAppVR.UI
 			if (_roomData != null)
 			{
 				_leaderboardButton.onClick.RemoveAllListeners();
-				_leaderboardButton.onClick.AddListener(() => _uiManager.OpenLeaderboardPanel(_dataProvider.GetLeaderboardData(_roomData.Id)));
+				_leaderboardButton.onClick.AddListener(() => _uiManager.OpenLeaderboardPanel(_roomData.Id));
 				_roomNameInputField.text = _roomData.RoomName;
 			
 				_editLessonsContainer.FillContainer(_roomData.Lessons);

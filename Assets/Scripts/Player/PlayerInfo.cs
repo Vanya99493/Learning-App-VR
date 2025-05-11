@@ -18,9 +18,9 @@ namespace LearningAppVR.Player
 		public string Password { get; private set; }
 		public UserRole UserRole => _userData.PersonalData.UserRole;
 
-		private PlayFabServerRequester _playFabServerRequester;
-		private UserData _userData;
+		private readonly PlayFabServerRequester _playFabServerRequester = new();
 		
+		private UserData _userData;
 		private bool _isInitialized = false;
 		private Action _finishInitializingSubscribers;
 
@@ -49,11 +49,9 @@ namespace LearningAppVR.Player
 		{
 			UserName = username;
 			Password = password;
-			
-			PlayerPrefs.SetString(USERNAME_KEY, UserName);
-			PlayerPrefs.SetString(PASSWORD_KEY, Password);
-			PlayerPrefs.SetInt(REMEMBER_ME_KEY, 1);
 
+			SaveCredentialsLocal();
+			
 			HasRememberedInfo = true;
 			InitializeUserData();
 		}
@@ -77,19 +75,24 @@ namespace LearningAppVR.Player
 			});
 		}
 
-		public void SaveResult(string roomId, string lessonId, ResultData resultData)
+		public async void SaveResult(ResultData resultData)
 		{
-			// TODO: add saving of the data and updating leaderboard score logic consider all nuances
+			await _playFabServerRequester.SaveUserResult(resultData);
 		}
 
 		private async void InitializeUserData()
 		{
-			_playFabServerRequester = new();
-
 			_userData = await _playFabServerRequester.GetUserData();
 
 			_isInitialized = true;
 			_finishInitializingSubscribers?.Invoke();
+		}
+
+		private void SaveCredentialsLocal()
+		{
+			PlayerPrefs.SetString(USERNAME_KEY, UserName);
+			PlayerPrefs.SetString(PASSWORD_KEY, Password);
+			PlayerPrefs.SetInt(REMEMBER_ME_KEY, 1);
 		}
 	}
 }

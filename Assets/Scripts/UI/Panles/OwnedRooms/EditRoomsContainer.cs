@@ -20,9 +20,9 @@ namespace LearningAppVR.UI
 			_additionalButtonController.UpdateAddButtonPosition(_parent);
 		}
 
-		protected override ButtonWrapper InstantiateButtonWrapper(RoomData dataCollectionElement)
+		protected override ButtonWrapper InstantiateElement(RoomData dataCollectionElement)
 		{
-			var buttonWrapper = base.InstantiateButtonWrapper(dataCollectionElement);
+			var buttonWrapper = base.InstantiateElement(dataCollectionElement);
 			buttonWrapper.Text.text = dataCollectionElement.RoomName;
 			return buttonWrapper;
 		}

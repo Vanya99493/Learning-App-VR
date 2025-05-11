@@ -1,59 +1,44 @@
 using System;
-using System.Collections.Generic;
 using LearningAppVR.Configs;
 using UnityEngine;
 
 namespace LearningAppVR.UI
 {
-	public class ButtonsWrappersContainer<T> : MonoBehaviour
+	public class ButtonsWrappersContainer<T> : ElementsContainer<ButtonWrapper, T>
 	{
 		public event Action<T> SelectEvent;
 
+		[Space(10)]
 		[SerializeField]
 		protected ButtonStatesConfig _buttonStatesConfig;
 		
 		[SerializeField]
 		protected bool _holdActiveButton = true;
-		
-		[Space(10)]
-		[SerializeField]
-		protected ButtonWrapper _buttonWrapperPrefab;
 
 		[SerializeField]
-		protected Transform _parent;
+		protected bool _activateAfterAdd = false;
 
-		protected List<ButtonWrapper> _buttonsWrappers = new();
 		protected ButtonWrapper _lastActiveButtonWrapper;
 
-		public virtual void FillContainer(List<T> dataCollection)
+		public override ButtonWrapper AddElement(T dataElement)
 		{
-			ResetLessons();
-			foreach (var dataCollectionElement in dataCollection)
+			var element = base.AddElement(dataElement);
+			if (_activateAfterAdd)
 			{
-				_buttonsWrappers.Add(InstantiateButtonWrapper(dataCollectionElement));
+				element.Button.onClick.Invoke();
 			}
+			return element;
 		}
 
-		public virtual void AddElement(T dataElement)
+		protected override void ResetElements()
 		{
-			var element = InstantiateButtonWrapper(dataElement);
-			_buttonsWrappers.Add(element);
-			element.Button.onClick.Invoke();
-		}
-
-		protected void ResetLessons()
-		{
-			foreach (var buttonWrapper in _buttonsWrappers)
-			{
-				Destroy(buttonWrapper.gameObject);
-			}
-			_buttonsWrappers.Clear();
+			base.ResetElements();
 			_lastActiveButtonWrapper = null;
 		}
 
-		protected virtual ButtonWrapper InstantiateButtonWrapper(T dataCollectionElement)
+		protected override ButtonWrapper InstantiateElement(T dataCollectionElement)
 		{
-			var buttonWrapper = Instantiate(_buttonWrapperPrefab, _parent);
+			var buttonWrapper = base.InstantiateElement(dataCollectionElement);
 			buttonWrapper.Button.onClick.AddListener(() => OnButtonWrapperButtonClickEventHandler(buttonWrapper, dataCollectionElement));
 			return buttonWrapper;
 		}

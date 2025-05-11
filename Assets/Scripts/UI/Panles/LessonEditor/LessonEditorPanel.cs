@@ -32,6 +32,10 @@ namespace LearningAppVR.UI
 		[SerializeField]
 		private QuestionsSettingsContainer _questionsSettingsContainer;
 
+		[Space(10)]
+		[SerializeField]
+		private Validator _validator;
+
 		private LessonData _lessonData;
 
 		public override void Initialize(IUIManager uiManager)
@@ -76,6 +80,23 @@ namespace LearningAppVR.UI
 
 		private void Save()
 		{
+			if (!_validator.Validate())
+			{
+				_uiManager.ActivatePopup(new PopupData()
+				{
+					PopupTextInfo = "Validation failed",
+					FirstButtonData = new ButtonData()
+					{
+						ButtonText = "Continue",
+						ButtonCallback = () =>
+						{
+							_uiManager.DeactivatePopup();
+						}
+					}
+				});
+				return;
+			}
+			
 			_lessonData = _generalSettingsContainer.LessonData.Clone();
 			
 			_lessonData.QuestionsData.Clear();

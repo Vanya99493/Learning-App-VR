@@ -5,6 +5,7 @@ namespace LearningAppVR.UI
 {
 	public class LessonPanel : BasePanel, ILessonPanel
 	{
+		public event Action<string, LessonData> StartLessonEvent;
 		public event Action EndCountdownEvent;
 		
 		[SerializeField]
@@ -19,9 +20,12 @@ namespace LearningAppVR.UI
 		[SerializeField]
 		private ResultsPanel _resultsPanel;
 
+		private LessonData _lessonData;
 		private LessonSubPanel _currentActivePanel;
 
+		public IUIManager UIManager => _uiManager;
 		public QuizPanel QuizPanel => _quizPanel;
+		public ResultsPanel ResultsPanel => _resultsPanel;
 
 		public override void Initialize(IUIManager uiManager)
 		{
@@ -31,6 +35,15 @@ namespace LearningAppVR.UI
 			_countDownPanel.Initialize(this);
 			_quizPanel.Initialize(this);
 			_resultsPanel.Initialize(this);
+
+			_countDownPanel.EndCountdownEvent += OnEndCountdownEventHandler;
+		}
+
+		public void Open(string roomId, LessonData lessonData)
+		{
+			base.Open();
+			OpenPreparationPanel(lessonData.LessonName);
+			StartLessonEvent?.Invoke(roomId, lessonData);
 		}
 
 		public void CloseLessonPanel()
@@ -46,6 +59,7 @@ namespace LearningAppVR.UI
 		public void OpenPreparationPanel(string lessonName)
 		{
 			CloseCurrentPanel();
+			_currentActivePanel = _preparationPanel;
 			_preparationPanel.Open(lessonName);
 		}
 
@@ -54,20 +68,18 @@ namespace LearningAppVR.UI
 			OpenNewPanel(_countDownPanel);
 		}
 
-		public void OpenQuizPanel()
+		public void OpenQuizPanel(int timeInSeconds)
 		{
-			OpenNewPanel(_quizPanel);
+			CloseCurrentPanel();
+			_currentActivePanel = _quizPanel;
+			_quizPanel.Open(timeInSeconds);
 		}
 
 		public void OpenResultsPanel(int earnedPoint, int maxPoints = -1)
 		{
 			CloseCurrentPanel();
+			_currentActivePanel = _resultsPanel;
 			_resultsPanel.Open(earnedPoint, maxPoints);
-		}
-
-		public void OnEndCountdown()
-		{
-			EndCountdownEvent?.Invoke();
 		}
 
 		public void CloseCurrentPanel()
@@ -81,6 +93,11 @@ namespace LearningAppVR.UI
 			_currentActivePanel?.Close();
 			_currentActivePanel = newPanel;
 			_currentActivePanel.Open();
+		}
+
+		private void OnEndCountdownEventHandler()
+		{
+			EndCountdownEvent?.Invoke();
 		}
 	}
 }

@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using LearningAppVR.UI;
 using UnityEngine;
@@ -6,25 +7,26 @@ namespace LearningAppVR
 {
 	public class LessonController : MonoBehaviour
 	{
-		private QuizPanel _quizPanel;
+		public event Action<ResultData> EndLessonEvent;
+		
+		private LessonPanel _lessonPanel;
+		private string _roomId;
 		private LessonData _lessonData;
 		private Dictionary<int, string> _answersContainer = new();
-		private Timer _timer;
 
 		private int _questionNumber;
 
-		public void Initialize(QuizPanel quizPanel)
+		public void Initialize(LessonPanel lessonPanel)
 		{
-			_quizPanel = quizPanel;
-			_quizPanel.Initialize(OnAnswerSelected);
-			
-			_timer = new Timer();
-			_timer.TimerUpdateEvent += OnTimerUpdate;
-			_timer.TimerEndEvent += OnTimerEnd;
+			_lessonPanel = lessonPanel;
+			_lessonPanel.QuizPanel.Initialize(OnAnswerSelected);
+			_lessonPanel.QuizPanel.LessonTimeEndEvent += OnTimerEnd;
+			_lessonPanel.QuizPanel.FinishLessonEvent += EndLesson;
 		}
 		
-		public void SetupLesson(LessonData lessonData)
+		public void SetupLesson(string roomId, LessonData lessonData)
 		{
+			_roomId = roomId;
 			_lessonData = lessonData;
 			
 			_answersContainer.Clear();
@@ -33,31 +35,36 @@ namespace LearningAppVR
 				_answersContainer.Add(i, null);
 			}
 
-			_quizPanel.InitializeQuestionsButtons(lessonData.QuestionsData.Count, OnQuestionButtonWrapperSelected);
-			
+			_lessonPanel.QuizPanel.InitializeQuestionsButtons(lessonData.QuestionsData.Count, SetupQuestion);
+		}
+
+		public void ReSetupLesson()
+		{
+			SetupLesson(_roomId, _lessonData);
+		}
+
+		public void StartLesson()
+		{
+			_lessonPanel.OpenQuizPanel(_lessonData.LessonTime);
 			SetupQuestion();
-			_quizPanel.SetupButtonWrapperState(0, ButtonStateType.Active);
-			
-			_timer.Start(_lessonData.LessonTime);
 		}
 
 		private void EndLesson()
 		{
-			// TODO: add logic of calculation of the lesson quiz
+			int earnedPoints = CalculatePoints();
+			EndLessonEvent?.Invoke(new ResultData()
+			{
+				RoomId = _roomId,
+				LessonId = _lessonData.Id,
+				EarnedPoints = earnedPoints
+			});
+			_lessonPanel.OpenResultsPanel(earnedPoints, _lessonData.GetGlobalPoints());
 		}
 
 		private void SetupQuestion(int questionNumber = 1)
 		{
 			_questionNumber = questionNumber;
-			
-			_quizPanel.SetupQuestion(_lessonData.QuestionsData[_questionNumber - 1], _answersContainer[_questionNumber]);
-		}
-
-		private void OnQuestionButtonWrapperSelected(int questionIndex)
-		{
-			_quizPanel.SetupButtonWrapperState(_questionNumber - 1, _answersContainer[_questionNumber] is null ? ButtonStateType.Passive : ButtonStateType.Answered);
-			_questionNumber = questionIndex;
-			_quizPanel.SetupButtonWrapperState(_questionNumber - 1, ButtonStateType.Active);
+			_lessonPanel.QuizPanel.SetupQuestion(_lessonData.QuestionsData[questionNumber - 1], _answersContainer[questionNumber]);
 		}
 
 		private void OnAnswerSelected(string answer)
@@ -67,16 +74,6 @@ namespace LearningAppVR
 			{
 				_answersContainer[_questionNumber] = answer;
 			}
-			else
-			{
-				_answersContainer[_questionNumber] = null;
-			}
-			_quizPanel.SetupQuestion(_lessonData.QuestionsData[_questionNumber - 1], _answersContainer[_questionNumber]);
-		}
-
-		private void OnTimerUpdate()
-		{
-			_quizPanel.UpdateTimeCountUI(Mathf.CeilToInt(_timer.Time));
 		}
 
 		private void OnTimerEnd()
@@ -85,6 +82,20 @@ namespace LearningAppVR
 			{
 				EndLesson();
 			}
+		}
+
+		private int CalculatePoints()
+		{
+			int earnedPoints = 0;
+			int index = 1;
+			
+			foreach (var questionData in _lessonData.QuestionsData)
+			{
+				earnedPoints += _answersContainer[index] is not null && _answersContainer[index] == questionData.CorrectAnswer ? questionData.Points : 0;
+				index++;
+			}
+
+			return earnedPoints;
 		}
 	}
 }

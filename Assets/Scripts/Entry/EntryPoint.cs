@@ -17,19 +17,25 @@ namespace LearningAppVR
 
 		[SerializeField]
 		private AppSettings _appSettings;
+		
+		[Space(5)]
+		[SerializeField]
+		private LessonStarter _lessonStarter;
 
 		private void Awake()
 		{
 			Initialize();
 		}
 
-		protected virtual void Initialize()
+		private void Initialize()
 		{
 			_appSettings.Initialize();
 			_playerInfo.Initialize();
 			_dataProvider.Initialize();
 			
 			_uiManager.Initialize();
+			
+			_lessonStarter.Initialize(_uiManager.LessonPanel);
 		}
 	}
 }

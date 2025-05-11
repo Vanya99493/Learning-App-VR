@@ -1,45 +1,21 @@
-using System;
 using System.Collections.Generic;
-using LearningAppVR.Configs;
-using UnityEngine;
 
 namespace LearningAppVR.UI
 {
-	public class QuestionsContainer : MonoBehaviour
+	public class QuestionsContainer : ButtonsWrappersContainer<int>
 	{
-		[SerializeField]
-		private List<ButtonWrapper> _questionsButtons = new();
-
-		[SerializeField]
-		private ButtonWrapper _questionButtonPrefab;
-
-		[Space(5)]
-		[SerializeField]
-		private ButtonStatesConfig buttonStatesConfig;
-		
-		public void AddQuestionButton(Action<int> onQuestionButtonClickCallback)
+		public override void FillContainer(List<int> dataCollection)
 		{
-			var buttonWrapper = Instantiate(_questionButtonPrefab, gameObject.transform);
-
-			var buttonNumber = _questionsButtons.Count + 1;
-			buttonWrapper.Text.text = buttonNumber.ToString();
-			buttonWrapper.Button.onClick.AddListener(() => onQuestionButtonClickCallback?.Invoke(buttonNumber));
-			
-			_questionsButtons.Add(buttonWrapper);
-		}
-		
-		public void ResetContainer()
-		{
-			foreach (var questionButton in _questionsButtons)
-			{
-				Destroy(questionButton.gameObject);
-			}
-			_questionsButtons.Clear();
+			base.FillContainer(dataCollection);
+			_elements[0].Button.onClick.Invoke();
 		}
 
-		public void SetupButtonWrapperState(int buttonWrapperIndex, ButtonStateType stateType)
+		public override ButtonWrapper AddElement(int dataElement)
 		{
-			_questionsButtons[buttonWrapperIndex].Image.color = buttonStatesConfig.GetColor(stateType);
+			var element = base.AddElement(dataElement);
+			int buttonNumber = _elements.Count;
+			element.Text.text = buttonNumber.ToString();
+			return element;
 		}
 	}
 }
