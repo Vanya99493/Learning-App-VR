@@ -9,10 +9,11 @@ namespace LearningAppVR
 	{
 		public event Action<ResultData> EndLessonEvent;
 		
+		private readonly Dictionary<int, string> _answersContainer = new();
+		
 		private LessonPanel _lessonPanel;
 		private string _roomId;
 		private LessonData _lessonData;
-		private Dictionary<int, string> _answersContainer = new();
 
 		private int _questionNumber;
 
@@ -27,20 +28,38 @@ namespace LearningAppVR
 		public void SetupLesson(string roomId, LessonData lessonData)
 		{
 			_roomId = roomId;
-			_lessonData = lessonData;
+			_lessonData = lessonData.Clone();
+
+			if (_lessonData.EnableRandomQuestionsPool)
+			{
+				int questionsCount = _lessonData.RandomQuestionsPoolCount <= 0 || _lessonData.RandomQuestionsPoolCount > _lessonData.QuestionsData.Count
+					? _lessonData.QuestionsData.Count
+					: _lessonData.RandomQuestionsPoolCount;
+
+				List<QuestionData> newQuestionsPool = new();
+				_lessonData.QuestionsData.Shuffle();
+
+				int index = 0;
+				foreach (var questionData in _lessonData.QuestionsData)
+				{
+					if (index >= questionsCount)
+					{
+						break;
+					}
+					newQuestionsPool.Add(questionData);
+					index++;
+				}
+
+				_lessonData.QuestionsData = newQuestionsPool;
+			}
 			
 			_answersContainer.Clear();
-			for (int i = 1; i <= lessonData.QuestionsData.Count; i++)
+			for (int i = 1; i <= _lessonData.QuestionsData.Count; i++)
 			{
 				_answersContainer.Add(i, null);
 			}
 
-			_lessonPanel.QuizPanel.InitializeQuestionsButtons(lessonData.QuestionsData.Count, SetupQuestion);
-		}
-
-		public void ReSetupLesson()
-		{
-			SetupLesson(_roomId, _lessonData);
+			_lessonPanel.QuizPanel.InitializeQuestionsButtons(_lessonData.QuestionsData.Count, SetupQuestion);
 		}
 
 		public void StartLesson()

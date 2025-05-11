@@ -49,7 +49,7 @@ namespace LearningAppVR.UI
 
 		private async void ObtainRooms(Action callback)
 		{
-			_roomsCollection = await _dataProvider.GetRoomsCollection();
+			_roomsCollection = await _dataProvider.GetOwnedRoomsCollection();
 			callback?.Invoke();
 		}
 

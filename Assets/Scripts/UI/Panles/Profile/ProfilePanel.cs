@@ -8,7 +8,7 @@ namespace LearningAppVR.UI
 	public class ProfilePanel : BasePanel
 	{
 		[SerializeField]
-		private PlayerInfo _playerInfo;
+		private DataProvider _dataProvider;
 		
 		[Space(10)]
 		[Header("Components")]
@@ -35,18 +35,18 @@ namespace LearningAppVR.UI
 			_teacherToolsContainer.Initialize(() => _uiManager.OpenOwnedRoomsPanel(true));
 			
 			_closeButton.onClick.AddListener(_uiManager.OpenMainMenuPanel);
-			_playerInfo.SubscribeOnFinishInitialization(UpdateAfterUserInfoInitialization);
+			_dataProvider.PlayerInfo.SubscribeOnFinishInitialization(UpdateAfterUserInfoInitialization);
 		}
 
 		private void UpdateAfterUserInfoInitialization()
 		{
-			_usernameText.text = _playerInfo.UserName;
-			_userRoleText.text = _playerInfo.UserRole.ToString();
+			_usernameText.text = _dataProvider.PlayerInfo.UserName;
+			_userRoleText.text = _dataProvider.PlayerInfo.UserRole.ToString();
 			
-			if (_playerInfo.UserRole == UserRole.Teacher)
+			if (_dataProvider.PlayerInfo.UserRole == UserRole.Teacher)
 			{
 				_requestRoleContainer.gameObject.SetActive(false);
-				_teacherToolsContainer.gameObject.SetActive(_playerInfo.UserRole == UserRole.Teacher && AppSettings.DeviceType == DeviceType.PC);
+				_teacherToolsContainer.gameObject.SetActive(_dataProvider.PlayerInfo.UserRole == UserRole.Teacher && AppSettings.DeviceType == DeviceType.PC);
 			}
 			else
 			{
@@ -56,7 +56,7 @@ namespace LearningAppVR.UI
 
 		private void OnSendRequestButtonClick()
 		{
-			_playerInfo.SendTeacherRoleRequest();
+			_dataProvider.PlayerInfo.SendTeacherRoleRequest();
 		}
 	}
 }

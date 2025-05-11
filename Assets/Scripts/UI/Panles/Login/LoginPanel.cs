@@ -8,7 +8,7 @@ namespace LearningAppVR.UI
 	public class LoginPanel : BasePanel
 	{
 		[SerializeField]
-		private PlayerInfo _playerInfo;
+		private DataProvider _dataProvider;
 		
 		[SerializeField]
 		private PlayFabLogin _playFabLogin;
@@ -28,7 +28,7 @@ namespace LearningAppVR.UI
 			_continueAsPanel.Initialize(OnContinueButtonClickEventHandler, ActivateEnterCredentialsPanel);
 			_enterCredentialsPanel.Initialize(OnLoginButtonClickEventHandler, ActivateContinueAsPanel);
 
-			if (_playerInfo.HasRememberedInfo)
+			if (_dataProvider.PlayerInfo.HasRememberedInfo)
 			{
 				ActivateContinueAsPanel();
 			}
@@ -49,7 +49,7 @@ namespace LearningAppVR.UI
 		private void OnContinueButtonClickEventHandler()
 		{
 			_continueAsPanel.DisableButtons();
-			TryLogin(_playerInfo.UserName, _playerInfo.Password);
+			TryLogin(_dataProvider.PlayerInfo.UserName, _dataProvider.PlayerInfo.Password);
 		}
 
 		private void OnLoginButtonClickEventHandler(string username, string password)
@@ -61,13 +61,13 @@ namespace LearningAppVR.UI
 		private void ActivateEnterCredentialsPanel()
 		{
 			_continueAsPanel.Deactivate();
-			_enterCredentialsPanel.Activate(_playerInfo.HasRememberedInfo);
+			_enterCredentialsPanel.Activate(_dataProvider.PlayerInfo.HasRememberedInfo);
 		}
 
 		private void ActivateContinueAsPanel()
 		{
 			_enterCredentialsPanel.Deactivate();
-			_continueAsPanel.Activate(_playerInfo.UserName);
+			_continueAsPanel.Activate(_dataProvider.PlayerInfo.UserName);
 		}
 
 		private void TryLogin(string username, string password)
@@ -79,7 +79,7 @@ namespace LearningAppVR.UI
 		{
 			if (isSuccess)
 			{
-				_playerInfo.SetupUserInfo(username, password);
+				_dataProvider.PlayerInfo.SetupUserInfo(username, password);
 				_uiManager.DeactivatePopup();
 				_uiManager.OpenMainMenuPanel();
 			}
@@ -118,7 +118,7 @@ namespace LearningAppVR.UI
 									{
 										if (isSuccess)
 										{
-											_playerInfo.SetupUserInfo(username, password);
+											_dataProvider.PlayerInfo.SetupUserInfo(username, password);
 											_uiManager.OpenMainMenuPanel();
 										}
 									});

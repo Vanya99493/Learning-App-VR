@@ -88,7 +88,7 @@ namespace LearningAppVR.UI
 
 			var filteredRoomsCollection = _roomsCollection.Rooms
 				.Where(roomData =>
-					roomData.SubjectType == roomFilters.SubjectType &&
+					(roomFilters.SubjectType == SubjectType.All || roomData.SubjectType == roomFilters.SubjectType) && 
 					roomData.RoomName.StartsWith(roomFilters.RoomName, StringComparison.OrdinalIgnoreCase) &&
 					roomData.Author.StartsWith(roomFilters.AuthorName, StringComparison.OrdinalIgnoreCase) &&
 					roomData.Access == roomFilters.Access)
@@ -107,6 +107,7 @@ namespace LearningAppVR.UI
 		private void OnChangeFiltersEventHandler(RoomFilters roomFilters)
 		{
 			_roomFilters = roomFilters;
+			FillRoomsContainer(_roomFilters);
 		}
 
 		private void OnSelectRoomEventHandler(RoomData roomData)

@@ -4,7 +4,7 @@ using UnityEngine;
 
 namespace LearningAppVR.Player
 {
-	public class PlayerInfo : MonoBehaviour
+	public class PlayerInfo : MonoBehaviour, IPlayerInfo
 	{
 		private const string REMEMBER_ME_KEY = "remember me";
 		private const string USERNAME_KEY = "username";

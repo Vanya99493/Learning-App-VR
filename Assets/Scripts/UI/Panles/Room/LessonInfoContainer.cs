@@ -27,7 +27,14 @@ namespace LearningAppVR.UI
 			_lessonName.text = lessonData.LessonName;
 			_difficultyText.text = $"Difficulty: {lessonData.Difficulty + 1}";
 			_timeText.text = $"Time: {lessonData.LessonTime.ToTimerString()}";
-			_questionsText.text = $"Questions: {lessonData.QuestionsData.Count}";
+			
+			int questionsCount = lessonData.EnableRandomQuestionsPool
+				? lessonData.RandomQuestionsPoolCount <= 0 ||
+				  lessonData.RandomQuestionsPoolCount > lessonData.QuestionsData.Count
+					? lessonData.QuestionsData.Count
+					: lessonData.RandomQuestionsPoolCount
+				: lessonData.QuestionsData.Count;
+			_questionsText.text = $"Questions: {questionsCount}";
 			
 			_startLessonButton.onClick.RemoveAllListeners();
 			_startLessonButton.onClick.AddListener(() => onStartButtonClick?.Invoke(lessonData));

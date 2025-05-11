@@ -7,12 +7,15 @@ namespace LearningAppVR
 	public class LessonStarter : MonoBehaviour
 	{
 		[SerializeField]
-		private PlayerInfo _playerInfo;
+		private DataProvider _dataProvider;
 		
 		[SerializeField]
 		private LessonController _lessonController;
 
 		private LessonPanel _lessonPanel;
+
+		private string _roomId;
+		private LessonData _lessonData;
 
 		public void Initialize(LessonPanel lessonPanel)
 		{
@@ -39,7 +42,9 @@ namespace LearningAppVR
 
 		private void PrepareLesson(string roomId, LessonData lessonData)
 		{
-			_lessonController.SetupLesson(roomId, lessonData);
+			_roomId = roomId;
+			_lessonData = lessonData;
+			_lessonController.SetupLesson(_roomId, _lessonData);
 		}
 
 		private void StartLesson()
@@ -49,13 +54,13 @@ namespace LearningAppVR
 
 		private void ReStartLesson()
 		{
-			_lessonController.ReSetupLesson();
+			_lessonController.SetupLesson(_roomId, _lessonData);
 			_lessonPanel.OpenPreparationPanel();
 		}
 
 		private void SaveResult(ResultData resultData)
 		{
-			_playerInfo.SaveResult(resultData);
+			_dataProvider.PlayerInfo.SaveResult(resultData);
 		}
 	}
 }

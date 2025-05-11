@@ -72,10 +72,25 @@ namespace PlayFab
 				});
 
 			await tcs.Task;
-			
-			// TODO: add validation on the owned rooms data. Now it returns all rooms (or add additional method to return only owned rooms)
 
 			return tcs.Task.Result;
+		}
+
+		public async Task<RoomsCollection> GetOwnedRoomsData(string username)
+		{
+			var allRoomsCollection = await GetAllRoomsData();
+
+			RoomsCollection ownedRoomsCollection = new RoomsCollection();
+
+			foreach (var roomData in allRoomsCollection.Rooms)
+			{
+				if (roomData.Author == username)
+				{
+					ownedRoomsCollection.Rooms.Add(roomData);
+				}
+			}
+
+			return ownedRoomsCollection;
 		}
 
 		public async Task<bool> UpdateRoomsData(RoomsCollection roomsCollection)

@@ -10,9 +10,6 @@ namespace LearningAppVR
 		private UIManager _uiManager;
 
 		[SerializeField]
-		private PlayerInfo _playerInfo;
-
-		[SerializeField]
 		private DataProvider _dataProvider;
 
 		[SerializeField]
@@ -30,7 +27,6 @@ namespace LearningAppVR
 		private void Initialize()
 		{
 			_appSettings.Initialize();
-			_playerInfo.Initialize();
 			_dataProvider.Initialize();
 			
 			_uiManager.Initialize();
