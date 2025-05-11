@@ -1,6 +1,5 @@
 using System;
-using JetBrains.Annotations;
-using LearningAppVR.DataAssets;
+using System.Collections.Generic;
 using LearningAppVR.UI;
 using UnityEngine;
 
@@ -8,58 +7,95 @@ namespace LearningAppVR
 {
 	public class LessonController : MonoBehaviour
 	{
-		[CanBeNull]
-		public event Action<int> EndLessonEvent;
+		public event Action<ResultData> EndLessonEvent;
 		
 		private LessonPanel _lessonPanel;
-		
-		private LessonDataAsset _lessonDataAsset;
-		private int _currentQuestion;
-		private int _correctAnswers;
+		private string _roomId;
+		private LessonData _lessonData;
+		private Dictionary<int, string> _answersContainer = new();
+
+		private int _questionNumber;
 
 		public void Initialize(LessonPanel lessonPanel)
 		{
 			_lessonPanel = lessonPanel;
-			_lessonPanel.SelectAnswerEvent += OnAnswerSelectedEventHandler;
+			_lessonPanel.QuizPanel.Initialize(OnAnswerSelected);
+			_lessonPanel.QuizPanel.LessonTimeEndEvent += OnTimerEnd;
+			_lessonPanel.QuizPanel.FinishLessonEvent += EndLesson;
 		}
-
-		private void OnDestroy()
+		
+		public void SetupLesson(string roomId, LessonData lessonData)
 		{
-			_lessonPanel.SelectAnswerEvent -= OnAnswerSelectedEventHandler;
-		}
-
-		public void StartLesson(LessonDataAsset lessonDataAsset)
-		{
-			_correctAnswers = 0;
-			_currentQuestion = 0;
-			_lessonDataAsset = lessonDataAsset;
+			_roomId = roomId;
+			_lessonData = lessonData;
 			
-			_lessonPanel.Initialize(lessonDataAsset.LessonName);
-			SetupNewQuestion();
+			_answersContainer.Clear();
+			for (int i = 1; i <= lessonData.QuestionsData.Count; i++)
+			{
+				_answersContainer.Add(i, null);
+			}
+
+			_lessonPanel.QuizPanel.InitializeQuestionsButtons(lessonData.QuestionsData.Count, SetupQuestion);
 		}
 
-		private void SetupNewQuestion()
+		public void ReSetupLesson()
 		{
-			_lessonPanel.SetupQuestion(_lessonDataAsset.Questions[_currentQuestion]);
+			SetupLesson(_roomId, _lessonData);
 		}
 
-		private void OnAnswerSelectedEventHandler(string selectedAnswer)
+		public void StartLesson()
 		{
-			if (selectedAnswer == _lessonDataAsset.Questions[_currentQuestion].CorrectAnswer)
+			_lessonPanel.OpenQuizPanel(_lessonData.LessonTime);
+			SetupQuestion();
+		}
+
+		private void EndLesson()
+		{
+			int earnedPoints = CalculatePoints();
+			EndLessonEvent?.Invoke(new ResultData()
 			{
-				_correctAnswers++;
+				RoomId = _roomId,
+				LessonId = _lessonData.Id,
+				EarnedPoints = earnedPoints
+			});
+			_lessonPanel.OpenResultsPanel(earnedPoints, _lessonData.GetGlobalPoints());
+		}
+
+		private void SetupQuestion(int questionNumber = 1)
+		{
+			_questionNumber = questionNumber;
+			_lessonPanel.QuizPanel.SetupQuestion(_lessonData.QuestionsData[questionNumber - 1], _answersContainer[questionNumber]);
+		}
+
+		private void OnAnswerSelected(string answer)
+		{
+			var previousAnswer = _answersContainer[_questionNumber];
+			if (previousAnswer is null)
+			{
+				_answersContainer[_questionNumber] = answer;
+			}
+		}
+
+		private void OnTimerEnd()
+		{
+			if (_lessonData.BlockAnswersAfterTimeOut)
+			{
+				EndLesson();
+			}
+		}
+
+		private int CalculatePoints()
+		{
+			int earnedPoints = 0;
+			int index = 1;
+			
+			foreach (var questionData in _lessonData.QuestionsData)
+			{
+				earnedPoints += _answersContainer[index] is not null && _answersContainer[index] == questionData.CorrectAnswer ? questionData.Points : 0;
+				index++;
 			}
 
-			_currentQuestion++;
-
-			if (_currentQuestion < _lessonDataAsset.Questions.Count)
-			{
-				SetupNewQuestion();
-			}
-			else
-			{
-				EndLessonEvent?.Invoke(_correctAnswers);
-			}
+			return earnedPoints;
 		}
 	}
 }

@@ -9,6 +9,7 @@ namespace LearningAppVR.UI
 		public virtual void Initialize(IUIManager uiManager)
 		{
 			_uiManager = uiManager;
+			Close();
 		}
 		
 		public virtual void SetActive(bool isActive)
