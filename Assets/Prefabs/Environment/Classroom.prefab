@@ -4171,14 +4171,6 @@ PrefabInstance:
       value: Pencil
       objectReference: {fileID: 0}
     - target: {fileID: 654615049399454663, guid: 01d028231b66c8441841f714bf1c863e, type: 3}
-      propertyPath: m_LocalScale.x
-      value: 0.3
-      objectReference: {fileID: 0}
-    - target: {fileID: 654615049399454663, guid: 01d028231b66c8441841f714bf1c863e, type: 3}
-      propertyPath: m_LocalScale.y
-      value: 0.3
-      objectReference: {fileID: 0}
-    - target: {fileID: 654615049399454663, guid: 01d028231b66c8441841f714bf1c863e, type: 3}
       propertyPath: m_LocalPosition.x
       value: 1.733
       objectReference: {fileID: 0}
@@ -6294,18 +6286,6 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 8756072622440565067}
     m_Modifications:
-    - target: {fileID: 763824122957205503, guid: d48ed861ba56b5a408d2fa8f304f520d, type: 3}
-      propertyPath: m_LocalScale.x
-      value: 30
-      objectReference: {fileID: 0}
-    - target: {fileID: 763824122957205503, guid: d48ed861ba56b5a408d2fa8f304f520d, type: 3}
-      propertyPath: m_LocalScale.y
-      value: 30
-      objectReference: {fileID: 0}
-    - target: {fileID: 763824122957205503, guid: d48ed861ba56b5a408d2fa8f304f520d, type: 3}
-      propertyPath: m_LocalScale.z
-      value: 30
-      objectReference: {fileID: 0}
     - target: {fileID: 763824122957205503, guid: d48ed861ba56b5a408d2fa8f304f520d, type: 3}
       propertyPath: m_LocalPosition.x
       value: 1.967

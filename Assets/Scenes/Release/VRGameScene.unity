@@ -159,6 +159,14 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 913427910}
     m_Modifications:
+    - target: {fileID: 2009079270965898144, guid: 86fca53ab8e42e24eaf086adfd6a3dcd, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: -3.613
+      objectReference: {fileID: 0}
+    - target: {fileID: 2009079270965898144, guid: 86fca53ab8e42e24eaf086adfd6a3dcd, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: -2.037
+      objectReference: {fileID: 0}
     - target: {fileID: 4130178800237402470, guid: 86fca53ab8e42e24eaf086adfd6a3dcd, type: 3}
       propertyPath: m_Name
       value: Classroom
@@ -202,6 +210,10 @@ PrefabInstance:
     - target: {fileID: 8712231570580445659, guid: 86fca53ab8e42e24eaf086adfd6a3dcd, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 9155159510074752176, guid: 86fca53ab8e42e24eaf086adfd6a3dcd, type: 3}
+      propertyPath: _updatesPerSecond
+      value: 2
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -1212,7 +1224,7 @@ MonoBehaviour:
   _profilePanel: {fileID: 924578829}
   _selectRoomPanel: {fileID: 908795539}
   _roomPanel: {fileID: 521038876}
-  _lessonPanel: {fileID: 0}
+  _lessonPanel: {fileID: 1723001241}
   _ownedRoomsPanel: {fileID: 1318946195}
   _roomEditorPanel: {fileID: 1839228344}
   _lessonEditorPanel: {fileID: 1248592814}
@@ -1280,6 +1292,17 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 6d5c00a97b42482f8648985891cbecf8, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &1723001241 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 7639534478863795540, guid: 6a58cf5eb73ee1847a8c3ca0bc2fe34f, type: 3}
+  m_PrefabInstance: {fileID: 4978683115543875110}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8ba10088dc8047541831bb8a69c18a5e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
 --- !u!1001 &1839228342
@@ -2250,7 +2273,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4991461014352112931, guid: 6a58cf5eb73ee1847a8c3ca0bc2fe34f, type: 3}
       propertyPath: m_IsActive
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 5037284540149021308, guid: 6a58cf5eb73ee1847a8c3ca0bc2fe34f, type: 3}
       propertyPath: m_Pivot.x
@@ -2342,6 +2365,10 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 5037284540149021308, guid: 6a58cf5eb73ee1847a8c3ca0bc2fe34f, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5522277380725051720, guid: 6a58cf5eb73ee1847a8c3ca0bc2fe34f, type: 3}
+      propertyPath: m_IsActive
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 5629981668973842461, guid: 6a58cf5eb73ee1847a8c3ca0bc2fe34f, type: 3}
