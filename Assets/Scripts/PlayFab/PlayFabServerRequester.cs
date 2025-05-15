@@ -161,7 +161,6 @@ namespace PlayFab
 		{
 			var userResultsCollection = await GetUserStatistics();
 
-			Debug.Log($"Results count {userResultsCollection.Results.Count}");
 			bool findResult = false;
 			foreach (var previousResultData in userResultsCollection.Results)
 			{

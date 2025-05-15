@@ -6,6 +6,6 @@ namespace LearningAppVR
 	[Serializable]
 	public class ResultsCollectionData
 	{
-		public List<ResultData> Results;
+		public List<ResultData> Results = new();
 	}
 }
