@@ -20,7 +20,7 @@ namespace LearningAppVR
 		public void Initialize(LessonPanel lessonPanel)
 		{
 			_lessonPanel = lessonPanel;
-			_lessonPanel.QuizPanel.Initialize(OnAnswerSelected);
+			_lessonPanel.QuizPanel.Initialize(lessonPanel, OnAnswerSelected);
 			_lessonPanel.QuizPanel.LessonTimeEndEvent += OnTimerEnd;
 			_lessonPanel.QuizPanel.FinishLessonEvent += EndLesson;
 		}

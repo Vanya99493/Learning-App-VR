@@ -49,5 +49,18 @@ namespace LearningAppVR
 
 			return 0;
 		}
+
+		public static string ToCase(this string str, SymbolCase symbolCase)
+		{
+			switch (symbolCase)
+			{
+				case SymbolCase.Lower:
+					return str.ToLower();
+				case SymbolCase.Upper:
+					return str.ToUpper();
+				default:
+					return str;
+			}
+		}
 	}
 }

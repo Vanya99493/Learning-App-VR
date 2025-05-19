@@ -22,10 +22,10 @@ namespace LearningAppVR.UI
 		[SerializeField]
 		private QuestionsContainer _questionsContainer;
 
-		public void Initialize(Action<string> onSelectAnswer)
+		public void Initialize(ILessonPanel lessonPanel, Action<string> onSelectAnswer)
 		{
 			_timeCountElement.Initialize();
-			_questionContainer.Initialize(onSelectAnswer);
+			_questionContainer.Initialize(lessonPanel, onSelectAnswer);
 			
 			_finishButton.onClick.AddListener(OnFinishButtonClick);
 

@@ -1,3 +1,4 @@
+using System;
 using UnityEngine;
 
 namespace LearningAppVR.UI
@@ -6,6 +7,9 @@ namespace LearningAppVR.UI
 	{
 		[SerializeField]
 		private PopupsManager _popupsManager;
+
+		[SerializeField]
+		private KeyboardsManager _keyboardsManager;
 
 		[Space(10)]
 		[Header("Panels")]
@@ -54,6 +58,8 @@ namespace LearningAppVR.UI
 
 		public void Initialize()
 		{
+			_keyboardsManager.Initialize();
+			
 			_loginPanel.Initialize(this);
 			_mainMenuPanel.Initialize(this);
 			_settingsPanel.Initialize(this);
@@ -80,6 +86,16 @@ namespace LearningAppVR.UI
 		public void DeactivatePopup()
 		{
 			_popupsManager.DeactivatePopup();
+		}
+
+		public void ActivateKeyboard(KeyboardType keyboardType, Action<KeyboardCode, string> onKeyButtonClick)
+		{
+			_keyboardsManager.ActivateKeyboard(keyboardType, onKeyButtonClick);
+		}
+
+		public void DeactivateKeyboard()
+		{
+			_keyboardsManager.DeactivateKeyboard();
 		}
 
 		public void OpenMainMenuPanel()

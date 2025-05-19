@@ -1,3 +1,5 @@
+using System;
+
 namespace LearningAppVR.UI
 {
 	public interface IUIManager
@@ -7,6 +9,9 @@ namespace LearningAppVR.UI
 		
 		void ActivatePopup(PopupData popupData);
 		void DeactivatePopup();
+
+		void ActivateKeyboard(KeyboardType keyboardType, Action<KeyboardCode, string> onKeyButtonClick);
+		void DeactivateKeyboard();
 		
 		void OpenMainMenuPanel();
 		void OpenSettingsPanel();

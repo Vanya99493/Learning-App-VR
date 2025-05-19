@@ -12,5 +12,5 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c10a0fd2ab944a09be99aa354bb82409, type: 3}
   m_Name: AppSettingsConfig
   m_EditorClassIdentifier: 
-  <DeviceType>k__BackingField: 0
+  <DeviceType>k__BackingField: 1
   <BlockLessonExperienceOnPC>k__BackingField: 0

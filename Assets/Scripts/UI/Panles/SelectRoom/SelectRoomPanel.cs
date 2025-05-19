@@ -50,7 +50,7 @@ namespace LearningAppVR.UI
 				Access = Access.Public
 			};
 			
-			_filtersContainer.Initialize();
+			_filtersContainer.Initialize(_uiManager);
 			_filtersContainer.ChangeFilterEvent += OnChangeFiltersEventHandler;
 
 			_roomsContainer.SelectRoomEvent += OnSelectRoomEventHandler;

@@ -20,10 +20,13 @@ namespace LearningAppVR.UI
 		[SerializeField]
 		private Button _returnButton;
 
-		public void Initialize(Action<string, string> onLoginButtonClickEvent, Action onReturnButtonClickEvent)
+		public void Initialize(IUIManager uiManager, Action<string, string> onLoginButtonClickEvent, Action onReturnButtonClickEvent)
 		{
 			_loginButton.onClick.AddListener(() => onLoginButtonClickEvent?.Invoke(_usernameInputFuild.text, _passwordInputFuild.text));
 			_returnButton.onClick.AddListener(() => onReturnButtonClickEvent?.Invoke());
+			
+			_usernameInputFuild.onSelect.AddListener(_ => uiManager.ActivateKeyboard(KeyboardType.Full, (code, value) =>  AddCharacter(_usernameInputFuild, code, value)));
+			_passwordInputFuild.onSelect.AddListener(_ => uiManager.ActivateKeyboard(KeyboardType.Full, (code, value) => AddCharacter(_passwordInputFuild, code, value)));
 		}
 
 		[Button]
@@ -54,6 +57,11 @@ namespace LearningAppVR.UI
 		{
 			_loginButton.interactable = true;
 			_returnButton.interactable = true;
+		}
+
+		private void AddCharacter(TMP_InputField inputField, KeyboardCode keyboardCode, string symbol)
+		{
+			inputField.OnKeyboardInput(keyboardCode, symbol);
 		}
 	}
 }
