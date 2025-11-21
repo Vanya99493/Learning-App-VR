@@ -88,6 +88,11 @@ namespace LearningAppVR.UI
 			_currentActivePanel = null;
 		}
 
+		public void ActivateKeyboard(KeyboardType keyboardType, Action<KeyboardCode, string> onKeyButtonClick)
+		{
+			_uiManager.ActivateKeyboard(keyboardType, onKeyButtonClick);
+		}
+
 		private void OpenNewPanel(LessonSubPanel newPanel)
 		{
 			_currentActivePanel?.Close();

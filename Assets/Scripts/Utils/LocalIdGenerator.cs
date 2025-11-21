@@ -5,10 +5,11 @@ namespace LearningAppVR
 	public static class LocalIdGenerator
 	{
 		private const string PLAYER_PREFS_LAST_ID_KEY = "LastKey";
+		private const string LAST_ID_BY_DEFAULT = "aazaaa";
 		
 		public static string GetId()
 		{
-			string key = PlayerPrefs.GetString(PLAYER_PREFS_LAST_ID_KEY, "aaaaaa");
+			string key = PlayerPrefs.GetString(PLAYER_PREFS_LAST_ID_KEY, LAST_ID_BY_DEFAULT);
 			char[] chars = key.ToCharArray();
 			for (int i = chars.Length - 1; i >= 0; i--)
 			{

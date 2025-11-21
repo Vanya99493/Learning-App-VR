@@ -22,7 +22,7 @@ namespace LearningAppVR.UI
 		[SerializeField]
 		private TMP_Dropdown _accesDropdown;
 		
-		public void Initialize()
+		public void Initialize(IUIManager uiManager)
 		{
 			_subjectDropDown.ClearOptions();
 			_subjectDropDown.AddOptions(new List<string>()
@@ -41,6 +41,9 @@ namespace LearningAppVR.UI
 			});
 			_accesDropdown.onValueChanged.AddListener(_ => OnFilterChange());
 			
+			_roomNameInputField.onSelect.AddListener(_ => uiManager.ActivateKeyboard(KeyboardType.Full, (code, value) => AddCharacter(_roomNameInputField, code, value)));
+			_authorNameInputField.onSelect.AddListener(_ => uiManager.ActivateKeyboard(KeyboardType.Full, (code, value) => AddCharacter(_authorNameInputField, code, value)));
+			
 			_roomNameInputField.onValueChanged.AddListener(_ => OnFilterChange());
 			_authorNameInputField.onValueChanged.AddListener(_ => OnFilterChange());
 		}
@@ -54,6 +57,11 @@ namespace LearningAppVR.UI
 				AuthorName = _authorNameInputField.text,
 				Access = (Access)_accesDropdown.value
 			});
+		}
+		
+		private void AddCharacter(TMP_InputField inputField, KeyboardCode keyboardCode, string symbol)
+		{
+			inputField.OnKeyboardInput(keyboardCode, symbol);
 		}
 	}
 }

@@ -26,7 +26,7 @@ namespace LearningAppVR.UI
 			base.Initialize(uiManager);
 
 			_continueAsPanel.Initialize(OnContinueButtonClickEventHandler, ActivateEnterCredentialsPanel);
-			_enterCredentialsPanel.Initialize(OnLoginButtonClickEventHandler, ActivateContinueAsPanel);
+			_enterCredentialsPanel.Initialize(uiManager, OnLoginButtonClickEventHandler, ActivateContinueAsPanel);
 
 			if (_dataProvider.PlayerInfo.HasRememberedInfo)
 			{
@@ -42,6 +42,7 @@ namespace LearningAppVR.UI
 		{
 			_enterCredentialsPanel.EnableButtons();
 			_continueAsPanel.EnableButtons();
+			_uiManager.DeactivateKeyboard();
 			base.Close();
 		}
 

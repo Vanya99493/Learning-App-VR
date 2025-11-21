@@ -1,3 +1,5 @@
+using System;
+
 namespace LearningAppVR.UI
 {
 	public interface ILessonPanel
@@ -11,6 +13,7 @@ namespace LearningAppVR.UI
 		void OpenCountDownPanel();
 		void OpenQuizPanel(int timeInSeconds);
 		void OpenResultsPanel(int earnedPoint, int maxPoints);
+		void ActivateKeyboard(KeyboardType keyboardType, Action<KeyboardCode, string> onKeyButtonClick);
 
 		void CloseCurrentPanel();
 	}

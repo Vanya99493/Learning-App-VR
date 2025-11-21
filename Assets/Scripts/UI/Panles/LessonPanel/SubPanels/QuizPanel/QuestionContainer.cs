@@ -16,9 +16,9 @@ namespace LearningAppVR.UI
 		[SerializeField]
 		private AnswerInputFieldContainer _answerInputFieldContainer;
 
-		public void Initialize(Action<string> onSelectAnswer)
+		public void Initialize(ILessonPanel lessonPanel, Action<string> onSelectAnswer)
 		{
-			_answerInputFieldContainer.Initialize(onSelectAnswer);
+			_answerInputFieldContainer.Initialize(lessonPanel, onSelectAnswer);
 			_answerButtonsContainer.SelectEvent += onSelectAnswer;
 		}
 		
