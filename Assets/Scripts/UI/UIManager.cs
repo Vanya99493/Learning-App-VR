@@ -58,7 +58,7 @@ namespace LearningAppVR.UI
 
 		public void Initialize()
 		{
-			_keyboardsManager.Initialize();
+			_keyboardsManager?.Initialize();
 			
 			_loginPanel.Initialize(this);
 			_mainMenuPanel.Initialize(this);
@@ -90,12 +90,12 @@ namespace LearningAppVR.UI
 
 		public void ActivateKeyboard(KeyboardType keyboardType, Action<KeyboardCode, string> onKeyButtonClick)
 		{
-			_keyboardsManager.ActivateKeyboard(keyboardType, onKeyButtonClick);
+			_keyboardsManager?.ActivateKeyboard(keyboardType, onKeyButtonClick);
 		}
 
 		public void DeactivateKeyboard()
 		{
-			_keyboardsManager.DeactivateKeyboard();
+			_keyboardsManager?.DeactivateKeyboard();
 		}
 
 		public void OpenMainMenuPanel()
