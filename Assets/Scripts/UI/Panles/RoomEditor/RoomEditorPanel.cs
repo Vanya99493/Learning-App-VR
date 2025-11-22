@@ -130,7 +130,7 @@ namespace LearningAppVR.UI
 		{
 			if (_validator.Validate())
 			{
-				await _dataProvider.SaveRoomData(_roomData);
+				await _dataProvider.RemoteSaveRoomData(_roomData);
 				_uiManager.DeactivatePopup();
 				_uiManager.OpenOwnedRoomsPanel(true);
 			}

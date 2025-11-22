@@ -124,6 +124,33 @@ namespace PlayFab
 			return tcs.Task.Result;
 		}
 
+		public async Task<bool> UpdateRoomData(RoomData roomData)
+		{
+			var tcs = new TaskCompletionSource<bool>();
+			
+			var request = new ExecuteCloudScriptRequest
+			{
+				FunctionName = "RoomUpdateQueueHandler",
+				FunctionParameter = roomData,
+				GeneratePlayStreamEvent = false
+			};
+
+			PlayFabClientAPI.ExecuteCloudScript(request, result =>
+				{
+					Debug.Log("Cloud Script executed: " + result.FunctionResult.ToString());
+					tcs.SetResult(true);
+				},
+				error =>
+				{
+					Debug.LogError("Cloud Script error: " + error.GenerateErrorReport());
+					tcs.SetResult(false);
+				});
+			
+			await tcs.Task;
+
+			return tcs.Task.Result;
+		}
+
 		public async Task<RoomLeaderboardData> GetLeaderboard(string roomId)
 		{
 			var tcs = new TaskCompletionSource<RoomLeaderboardData>();

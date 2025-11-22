@@ -76,6 +76,12 @@ namespace LearningAppVR.Player
 			await _playFabServerRequester.UpdateRoomsData(roomsCollection);
 		}
 
+		public async Task RemoteSaveRoomData(RoomData roomData)
+		{
+			roomData.Author = _playerInfo.UserName;
+			await _playFabServerRequester.UpdateRoomData(roomData);
+		}
+
 		public async Task<RoomLeaderboardData> GetLeaderboardData(string roomId)
 		{
 			return await _playFabServerRequester.GetLeaderboard(roomId);
