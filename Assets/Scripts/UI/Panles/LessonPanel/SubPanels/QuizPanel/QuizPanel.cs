@@ -8,7 +8,7 @@ namespace LearningAppVR.UI
 	public class QuizPanel : LessonSubPanel
 	{
 		public event Action LessonTimeEndEvent;
-		public event Action FinishLessonEvent;
+		public event Action<int> FinishLessonEvent;
 
 		[SerializeField]
 		private TimeCountElement _timeCountElement;
@@ -79,7 +79,7 @@ namespace LearningAppVR.UI
 					ButtonCallback = () =>
 					{
 						_lessonPanel.UIManager.DeactivatePopup();
-						FinishLessonEvent?.Invoke();
+						FinishLessonEvent?.Invoke(_timeCountElement.SpentTime);
 					}
 				},
 				SecondButtonData = new ButtonData()

@@ -1,3 +1,4 @@
+using System.Linq;
 using System.Threading.Tasks;
 using PlayFab;
 using UnityEngine;
@@ -85,6 +86,21 @@ namespace LearningAppVR.Player
 		public async Task<RoomLeaderboardData> GetLeaderboardData(string roomId)
 		{
 			return await _playFabServerRequester.GetLeaderboard(roomId);
+		}
+
+		public async Task<UserResultsCollectionData> GetUserResultsByLessonId(string lessonId)
+		{
+			return await _playFabServerRequester.GetUserResultsByLessonId(lessonId);
+		}
+
+		public async Task<UserResultsCollectionData> GetUserResultsAsync(string lessonId)
+		{
+			var userResultsCollectionData = await _playFabServerRequester.GetUserResultsAsync();
+			UserResultsCollectionData filteredUserResultCollectionData = new()
+			{
+				Results = userResultsCollectionData.Results.Where(x => x.LessonId == lessonId).ToList()
+			};
+			return filteredUserResultCollectionData;
 		}
 	}
 }

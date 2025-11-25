@@ -75,8 +75,9 @@ namespace LearningAppVR.Player
 			});
 		}
 
-		public async void SaveResult(ResultData resultData)
+		public async void SaveResult(GlobalResultData resultData)
 		{
+			resultData.PlayerName = UserName;
 			await _playFabServerRequester.SaveUserResult(resultData);
 		}
 

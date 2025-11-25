@@ -15,6 +15,8 @@ namespace LearningAppVR.UI
 		private int _timeInSeconds;
 		private int _previousTime;
 
+		public int SpentTime => (int)_timer.Time;
+
 		public void Initialize()
 		{
 			_timer = new Timer();

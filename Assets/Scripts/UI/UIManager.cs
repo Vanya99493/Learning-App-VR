@@ -38,6 +38,9 @@ namespace LearningAppVR.UI
 		private OwnedRoomsPanel _ownedRoomsPanel;
 
 		[SerializeField]
+		private StatisticsPanel _statisticsPanel;
+
+		[SerializeField]
 		private RoomEditorPanel _roomEditorPanel;
 
 		[SerializeField]
@@ -68,6 +71,7 @@ namespace LearningAppVR.UI
 			_roomPanel.Initialize(this);
 			_lessonPanel.Initialize(this);
 			_ownedRoomsPanel.Initialize(this);
+			_statisticsPanel.Initialize(this);
 			_roomEditorPanel.Initialize(this);
 			_lessonEditorPanel.Initialize(this);
 			_leaderboardPanel.Initialize(this);
@@ -139,6 +143,13 @@ namespace LearningAppVR.UI
 			CloseCurrentPanel();
 			_currentActivePanel = _ownedRoomsPanel;
 			_ownedRoomsPanel.Open(needToUpdateRoomsCollection);
+		}
+
+		public void OpenStatisticsPanel()
+		{
+			CloseCurrentPanel();
+			_currentActivePanel = _statisticsPanel;
+			_statisticsPanel.Open();
 		}
 
 		public void OpenRoomEditorPanel(RoomData roomData)

@@ -9,9 +9,13 @@ namespace LearningAppVR.UI
 		[SerializeField]
 		private Button _editButton;
 
-		public void Initialize(Action onEditButtonClick)
+		[SerializeField]
+		private Button _statisticsButton;
+
+		public void Initialize(Action onEditButtonClick, Action onStatisticsButtonClick)
 		{
 			_editButton.onClick.AddListener(() => onEditButtonClick?.Invoke());
+			_statisticsButton.onClick.AddListener(() => onStatisticsButtonClick?.Invoke());
 		}
 	}
 }

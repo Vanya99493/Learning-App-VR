@@ -12,6 +12,6 @@ namespace LearningAppVR.Player
 		void SetupUserInfo(string username, string password);
 		public void SubscribeOnFinishInitialization(Action subscriber);
 		public void SendTeacherRoleRequest();
-		public void SaveResult(ResultData resultData);
+		public void SaveResult(GlobalResultData resultData);
 	}
 }

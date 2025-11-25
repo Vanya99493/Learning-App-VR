@@ -7,7 +7,7 @@ namespace LearningAppVR
 {
 	public class LessonController : MonoBehaviour
 	{
-		public event Action<ResultData> EndLessonEvent;
+		public event Action<GlobalResultData> EndLessonEvent;
 		
 		private readonly Dictionary<int, string> _answersContainer = new();
 		
@@ -68,14 +68,15 @@ namespace LearningAppVR
 			SetupQuestion();
 		}
 
-		private void EndLesson()
+		private void EndLesson(int spentTime)
 		{
 			int earnedPoints = CalculatePoints();
-			EndLessonEvent?.Invoke(new ResultData()
+			EndLessonEvent?.Invoke(new GlobalResultData()
 			{
 				RoomId = _roomId,
 				LessonId = _lessonData.Id,
-				EarnedPoints = earnedPoints
+				EarnedPoints = earnedPoints,
+				SpentTime = spentTime
 			});
 			_lessonPanel.OpenResultsPanel(earnedPoints, _lessonData.GetGlobalPoints());
 		}
@@ -99,7 +100,7 @@ namespace LearningAppVR
 		{
 			if (_lessonData.BlockAnswersAfterTimeOut)
 			{
-				EndLesson();
+				EndLesson(_lessonData.LessonTime);
 			}
 		}
 

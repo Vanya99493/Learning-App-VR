@@ -32,7 +32,10 @@ namespace LearningAppVR.UI
 		{
 			base.Initialize(uiManager);
 			
-			_teacherToolsContainer.Initialize(() => _uiManager.OpenOwnedRoomsPanel(true));
+			_teacherToolsContainer.Initialize(
+				() => _uiManager.OpenOwnedRoomsPanel(true),
+				() => _uiManager.OpenStatisticsPanel()
+				);
 			
 			_closeButton.onClick.AddListener(_uiManager.OpenMainMenuPanel);
 			_dataProvider.PlayerInfo.SubscribeOnFinishInitialization(UpdateAfterUserInfoInitialization);

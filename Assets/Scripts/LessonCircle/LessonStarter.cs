@@ -58,7 +58,7 @@ namespace LearningAppVR
 			_lessonPanel.OpenPreparationPanel();
 		}
 
-		private void SaveResult(ResultData resultData)
+		private void SaveResult(GlobalResultData resultData)
 		{
 			_dataProvider.PlayerInfo.SaveResult(resultData);
 		}

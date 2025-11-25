@@ -131,24 +131,123 @@ namespace PlayFab
 			var request = new ExecuteCloudScriptRequest
 			{
 				FunctionName = "RoomUpdateQueueHandler",
-				FunctionParameter = roomData,
-				GeneratePlayStreamEvent = false
+				FunctionParameter = roomData
 			};
 
-			PlayFabClientAPI.ExecuteCloudScript(request, result =>
+			PlayFabClientAPI.ExecuteCloudScript(request,
+				result =>
 				{
-					Debug.Log("Cloud Script executed: " + result.FunctionResult.ToString());
+					Debug.Log("Enqueued RoomUpdateQueueHandler");
 					tcs.SetResult(true);
 				},
 				error =>
 				{
-					Debug.LogError("Cloud Script error: " + error.GenerateErrorReport());
+					Debug.LogError(error.GenerateErrorReport());
 					tcs.SetResult(false);
 				});
 			
-			await tcs.Task;
+			return await tcs.Task;
+		}
 
-			return tcs.Task.Result;
+		public async Task<bool> UpdateResultData(UserResultData userResultData)
+		{
+			var tcs = new TaskCompletionSource<bool>();
+
+			var request = new ExecuteCloudScriptRequest
+			{
+				FunctionName = "ResultUpdateQueueHandler",
+				FunctionParameter = userResultData
+			};
+			
+			PlayFabClientAPI.ExecuteCloudScript(request,
+				result =>
+				{
+					Debug.Log("Enqueued ResultUpdateQueueHandler");
+					tcs.SetResult(true);
+				},
+				error =>
+				{
+					Debug.LogError(error.GenerateErrorReport());
+					tcs.SetResult(false);
+				});
+			
+			return await tcs.Task;
+		}
+
+		public async Task<UserResultsCollectionData> GetUserResultsByLessonId(string lessonId)
+		{
+			var tcs = new TaskCompletionSource<UserResultsCollectionData>();
+			
+			var request = new ExecuteCloudScriptRequest
+			{
+				FunctionName = "GetResultsByLessonId",
+				FunctionParameter = new { LessonId = lessonId },
+				GeneratePlayStreamEvent = false
+			};
+			
+			PlayFabClientAPI.ExecuteCloudScript(request,
+				result =>
+				{
+					try
+					{
+						string json = result.FunctionResult.ToString();
+						Debug.Log("CloudScript raw: " + json);
+						UserResultsCollectionData data = JsonUtility.FromJson<UserResultsCollectionData>(json);
+						tcs.SetResult(data);
+					}
+					catch (System.Exception ex)
+					{
+						Debug.LogError("Parse error: " + ex);
+						tcs.SetResult(new UserResultsCollectionData());
+					}
+				},
+				error =>
+				{
+					Debug.LogError("CloudScript error: " + error.GenerateErrorReport());
+					tcs.SetResult(new UserResultsCollectionData());
+				});
+
+			return await tcs.Task;
+		}
+		
+		public async Task<UserResultsCollectionData> GetUserResultsAsync()
+		{
+			var tcs = new TaskCompletionSource<UserResultsCollectionData>();
+
+			var request = new GetTitleDataRequest
+			{
+				Keys = new System.Collections.Generic.List<string> { "UserResults" }
+			};
+
+			PlayFabClientAPI.GetTitleData(request,
+				result =>
+				{
+					if (result.Data != null && result.Data.TryGetValue("UserResults", out string rawJson))
+					{
+						try
+						{
+							var data = JsonUtility.FromJson<UserResultsCollectionData>(rawJson);
+							tcs.SetResult(data);
+						}
+						catch (Exception e)
+						{
+							Debug.LogError($"Failed to parse UserResults JSON: {e}");
+							tcs.SetResult(new UserResultsCollectionData());
+						}
+					}
+					else
+					{
+						tcs.SetResult(new UserResultsCollectionData());
+					}
+				},
+				error =>
+				{
+					Debug.LogError($"PlayFab error: {error.GenerateErrorReport()}");
+					tcs.SetResult(new UserResultsCollectionData());
+				}
+			);
+
+			return await tcs.Task;
 		}
 
 		public async Task<RoomLeaderboardData> GetLeaderboard(string roomId)
@@ -184,7 +283,7 @@ namespace PlayFab
 			return leaderboardCollection;
 		}
 		
-		public async Task SaveUserResult(ResultData resultData)
+		public async Task SaveUserResult(GlobalResultData resultData)
 		{
 			var userResultsCollection = await GetUserStatistics();
 
@@ -209,10 +308,23 @@ namespace PlayFab
 			if (!findResult)
 			{
 				Debug.Log($"Add new result {resultData.EarnedPoints}");
-				userResultsCollection.Results.Add(resultData);
+				userResultsCollection.Results.Add(new ResultData()
+				{
+					RoomId = resultData.RoomId,
+					LessonId = resultData.LessonId,
+					EarnedPoints = resultData.EarnedPoints
+				});
 				SendLeaderboard(resultData.RoomId, CalculateRoomScore(userResultsCollection, resultData.RoomId));
 				SaveResultsData(userResultsCollection);
 			}
+			
+			UpdateResultData(new UserResultData()
+			{
+				LessonId = resultData.LessonId,
+				PlayerName = resultData.PlayerName,
+				EarnedPoints = resultData.EarnedPoints,
+				SpentTime = resultData.SpentTime
+			});
 		}
 
 		private async Task<ResultsCollectionData> GetUserStatistics()
