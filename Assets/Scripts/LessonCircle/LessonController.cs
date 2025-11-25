@@ -98,10 +98,7 @@ namespace LearningAppVR
 
 		private void OnTimerEnd()
 		{
-			if (_lessonData.BlockAnswersAfterTimeOut)
-			{
-				EndLesson(_lessonData.LessonTime);
-			}
+			EndLesson(_lessonData.LessonTime);
 		}
 
 		private int CalculatePoints()

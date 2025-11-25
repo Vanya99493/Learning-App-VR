@@ -11,9 +11,6 @@ namespace LearningAppVR.UI
 		private TMP_InputField _lessonNameInputField;
 
 		[SerializeField]
-		private TMP_Dropdown _difficultyDropdown;
-
-		[SerializeField]
 		private TMP_InputField _timeInputField;
 
 		[SerializeField]
@@ -22,20 +19,12 @@ namespace LearningAppVR.UI
 		[SerializeField]
 		private InputFieldWrapper _randomPoolInputFieldWrapper;
 
-		[SerializeField]
-		private Toggle _blockAnswersAfterTimeoutToggle;
-
-		[SerializeField]
-		private Toggle _increasePointsBeforeTimeoutToggle;
-
 		public LessonData LessonData;
 		public bool IsChanged;
 		
 		public void Initialize()
 		{
 			_randomPoolToggle.onValueChanged.AddListener(ChangeRandomPoolVisibility);
-			_difficultyDropdown.ClearOptions();
-			_difficultyDropdown.AddOptions(GenerateDifficultiesList(10));
 			InitSettingsEvents();
 		}
 		
@@ -44,13 +33,10 @@ namespace LearningAppVR.UI
 			LessonData = lessonData.Clone();
 			
 			_lessonNameInputField.text = LessonData.LessonName;
-			_difficultyDropdown.value = LessonData.Difficulty;
 			_timeInputField.text = LessonData.LessonTime.ToBaseTimeString();
 			_randomPoolToggle.isOn = LessonData.EnableRandomQuestionsPool;
 			_randomPoolInputFieldWrapper.InputField.text = LessonData.RandomQuestionsPoolCount.ToString();
 			ChangeRandomPoolVisibility(_randomPoolToggle.isOn);
-			_blockAnswersAfterTimeoutToggle.isOn = LessonData.BlockAnswersAfterTimeOut;
-			_increasePointsBeforeTimeoutToggle.isOn = LessonData.IncreasePointsBeforeTimeOut;
 		}
 
 		private void ChangeRandomPoolVisibility(bool isOn)
@@ -76,12 +62,6 @@ namespace LearningAppVR.UI
 				IsChanged = true;
 			});
 			
-			_difficultyDropdown.onValueChanged.AddListener(value =>
-			{
-				LessonData.Difficulty = value;
-				IsChanged = true;
-			});
-			
 			_timeInputField.onDeselect.AddListener(value =>
 			{
 				LessonData.LessonTime = value.FromBaseTimeStringToInt();
@@ -97,18 +77,6 @@ namespace LearningAppVR.UI
 			_randomPoolInputFieldWrapper.InputField.onDeselect.AddListener(value =>
 			{
 				LessonData.RandomQuestionsPoolCount = _randomPoolInputFieldWrapper.GetInputFieldValueInInt();
-				IsChanged = true;
-			});
-
-			_blockAnswersAfterTimeoutToggle.onValueChanged.AddListener(value =>
-			{
-				LessonData.BlockAnswersAfterTimeOut = value;
-				IsChanged = true;
-			});
-			
-			_increasePointsBeforeTimeoutToggle.onValueChanged.AddListener(value =>
-			{
-				LessonData.IncreasePointsBeforeTimeOut = value;
 				IsChanged = true;
 			});
 		}

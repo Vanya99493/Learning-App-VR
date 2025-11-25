@@ -11,9 +11,6 @@ namespace LearningAppVR.UI
 		private TMP_Text _lessonName;
 
 		[SerializeField]
-		private TMP_Text _difficultyText;
-
-		[SerializeField]
 		private TMP_Text _timeText;
 
 		[SerializeField]
@@ -25,7 +22,6 @@ namespace LearningAppVR.UI
 		public void Open(LessonData lessonData, Action<LessonData> onStartButtonClick)
 		{
 			_lessonName.text = lessonData.LessonName;
-			_difficultyText.text = $"Difficulty: {lessonData.Difficulty + 1}";
 			_timeText.text = $"Time: {lessonData.LessonTime.ToTimerString()}";
 			
 			int questionsCount = lessonData.EnableRandomQuestionsPool

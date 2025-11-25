@@ -90,8 +90,7 @@ namespace LearningAppVR.UI
 				.Where(roomData =>
 					(roomFilters.SubjectType == SubjectType.All || roomData.SubjectType == roomFilters.SubjectType) && 
 					roomData.RoomName.StartsWith(roomFilters.RoomName, StringComparison.OrdinalIgnoreCase) &&
-					roomData.Author.StartsWith(roomFilters.AuthorName, StringComparison.OrdinalIgnoreCase) &&
-					roomData.Access == roomFilters.Access)
+					roomData.Author.StartsWith(roomFilters.AuthorName, StringComparison.OrdinalIgnoreCase))
 				.ToList();
 
 			_roomsContainer.FillContainer(filteredRoomsCollection);

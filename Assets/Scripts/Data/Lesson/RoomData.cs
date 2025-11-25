@@ -10,7 +10,6 @@ namespace LearningAppVR
 		public string Author = "";
 		public string Id = "";
 		public SubjectType SubjectType;
-		public Access Access;
 		public List<LessonData> Lessons = new();
 
 		public RoomData(string id)
@@ -25,8 +24,7 @@ namespace LearningAppVR
 				RoomName = RoomName,
 				Author = Author,
 				Id = Id,
-				SubjectType = SubjectType,
-				Access = Access
+				SubjectType = SubjectType
 			};
 
 			var lessonsClone = new List<LessonData>();

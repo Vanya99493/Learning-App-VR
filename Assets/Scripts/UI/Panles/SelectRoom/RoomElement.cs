@@ -22,15 +22,11 @@ namespace LearningAppVR.UI
 		[SerializeField]
 		private TMP_Text _authorText;
 
-		[SerializeField]
-		private TMP_Text _accessText;
-
 		public void Initialize(RoomData roomData, Action<RoomData> onRoomSelect)
 		{
 			_subjectText.text = roomData.SubjectType.ToString();
 			_nameText.text = roomData.RoomName;
 			_authorText.text = roomData.Author;
-			_accessText.text = roomData.Access.ToString();
 			
 			_roomElementButton.onClick.AddListener(() => onRoomSelect?.Invoke(roomData));
 		}
