@@ -56,6 +56,7 @@ namespace PlayFab
 						string json = result.Data[PLAYFAB_KEY_ROOMS_DATA];
 						Debug.Log("Rooms Title Data: " + json);
 						var rooms = JsonUtility.FromJson<RoomsCollection>(json);
+						rooms.ValidateQuestionsTypes();
 						Debug.Log("Loaded Rooms: " + rooms.Rooms.Count);
 						tcs.SetResult(rooms);
 					}
