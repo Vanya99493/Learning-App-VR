@@ -76,6 +76,7 @@ GameObject:
   - component: {fileID: 1713075436725980968}
   - component: {fileID: 3804691564769707615}
   - component: {fileID: 5291453338722276428}
+  - component: {fileID: 2659681828989279958}
   m_Layer: 0
   m_Name: Marker
   m_TagString: Untagged
@@ -353,6 +354,22 @@ MonoBehaviour:
   references:
     version: 2
     RefIds: []
+--- !u!114 &2659681828989279958
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3839644463652138078}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7fd38a1992f943de876362f4868ee733, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _target: {fileID: 3848151711037917378}
+  _layerMask:
+    serializedVersion: 2
+    m_Bits: 64
 --- !u!1 &4233099016716453955
 GameObject:
   m_ObjectHideFlags: 0
